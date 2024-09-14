@@ -25,37 +25,39 @@ export default function Register() {
 
   return (
     <div className="min-h-screen flex justify-center items-center">
-      <div className="bg-[#008080] shadow-xl rounded-lg h-[75vh] w-[25vw]"></div>
+      <div className="bg-purple shadow-xl rounded-lg h-[75vh] w-[25vw]">
+        <img src="/assets/baby-incubator.png" alt="" />
+      </div>
       <div className="bg-white p-8 rounded-lg shadow-xl flex flex-col items-center h-[75vh] w-[25vw] justify-center">
-        <h1 className="font-bold mb-10 text-slate-500 text-3xl">Sign Up</h1>
+        <h1 className="font-bold mb-10 text-slate-500 text-4xl text-dark_purple">Create your first account</h1>
         <form className="space-y-4 w-full flex flex-col gap-5" onSubmit={handleSubmit}>
           <div className='flex flex-col gap-4'>
-            <div className="flex items-center gap-2 p-3 bg-green-50 text-xl">
+            <div className="flex items-center gap-2 p-3 bg-white_purple text-xl rounded-md">
               <BsPersonFill />
               <input
                 type="username"
                 id="username"
-                className="w-full rounded-md p-3 bg-green-50 font-semibold outline-none text-xl"
+                className="w-full rounded-md p-3 bg-white_purple font-semibold outline-none text-xl"
                 placeholder="Type your username"
                 onChange={(e) => setUsername(e.target.value)}
               />
             </div>
-            <div className="flex items-center gap-2 p-3 bg-green-50 text-xl">
+            <div className="flex items-center gap-2 p-3 bg-white_purple text-xl rounded-md">
               <AiOutlineMail />
               <input
                 type="email"
                 id="email"
-                className="w-full rounded-md p-3 bg-green-50 font-semibold outline-none text-xl"
+                className="w-full rounded-md p-3 bg-white_purple font-semibold outline-none text-xl"
                 placeholder="Type your email"
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div className="flex items-center gap-2 p-3 bg-green-50 text-xl">
+            <div className="flex items-center gap-2 p-3 bg-white_purple text-xl rounded-md">
               <FaUnlockKeyhole />
               <input
                 type="password"
                 id="password"
-                className="w-full rounded-md p-3 bg-green-50 font-semibold outline-none text-xl"
+                className="w-full rounded-md p-3 bg-white_purple font-semibold outline-none text-xl"
                 placeholder="Type your password"
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -63,13 +65,13 @@ export default function Register() {
           </div>
           <button
             type="submit"
-            className="w-full text-white rounded-2xl py-4 mt-10 bg-[#008080] font-bold hover:scale-105 flex justify-center"
+            className="w-full text-white rounded-2xl py-4 mt-10 bg-dark_purple font-bold hover:scale-105 flex justify-center"
           >
             REGISTER
           </button>
           <div className="flex justify-between">
-            <span className='text-[#008080] font-semibold cursor-pointer'>Want to verify ?</span>
-            <span className='text-[#008080] font-semibold cursor-pointer' onClick={() => router.push('/login')}>Already have an account ?</span>
+            <span className='text-dark_purple font-semibold cursor-pointer'>Want to verify ?</span>
+            <span className='text-dark_purple font-semibold cursor-pointer' onClick={() => router.push('/login')}>Already have an account ?</span>
           </div>
         </form>
       </div>
