@@ -9,7 +9,7 @@ export default function Panel() {
     const { pathname } = router;
 
     return (
-            <div className="p-6 flex flex-col gap-10 w-[20%] shadow-sm height-[100%] bg-ultralight_purple justify-center">
+            <div className="p-6 flex flex-col gap-10 w-[20%] shadow-sm h-screen bg-ultralight_purple justify-center">
                 <div 
                     className="flex gap-5 items-center text-xl hover:bg-gray-100 p-2 rounded-md cursor-pointer hover:text-purple"
                     onClick={() => router.push("/dashboard")}
