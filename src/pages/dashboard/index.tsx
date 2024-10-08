@@ -6,13 +6,17 @@ import { FaHistory } from "react-icons/fa";
 import { BsFillPersonLinesFill } from "react-icons/bs";
 import Head from '@/components/Navbar';
 import Panel from '@/components/Panel';
+import Chart from '@/components/Chart';
 
 
 export default function Dashboard() {
     return (
-        <div className='h-screen justify-center items-center'>
+        <div className='h-screen'>
             <Head />
-            <Panel />
+            <div className="flex ">
+                <Panel />
+                <Chart />
+            </div>
         </div>
     )
 }

@@ -15,6 +15,7 @@ const config: Config = {
       },
       colors: {
         white_purple: '#E6E0FF',
+        ultralight_purple: '#ddd7f7',
         light_purple: '#D0C7F8',
         purple: '#988BCD',
         dark_purple: '#4E3A9D'
