@@ -4,13 +4,11 @@ import { ApexOptions } from 'apexcharts';
 import mqtt, { MqttClient } from 'mqtt';
 import { Inter } from 'next/font/google';
 
-// Load the Inter font
 const inter = Inter({
     weight: ['500'],
     subsets: ['latin']
 });
 
-// Dynamically load the chart to avoid server-side rendering issues
 const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 interface SensorData {
@@ -54,85 +52,90 @@ const SensorChart: React.FC = () => {
     { name: 'Sensor 4', data: [] },
   ]);
 
-  const mqttBrokerUrl = 'wss://test.mosquitto.org:8081';
+  const mqttBrokerUrl = process.env.NEXT_PUBLIC_MQTT_CONNECTION || "mosquitto.org";
   const [loading, setLoading] = useState(true);
   const topic = "sensor/dht";
 
   useEffect(() => {
-    const client: MqttClient = mqtt.connect(mqttBrokerUrl);
+    const connectToMQTT = async () => {
+      const client: MqttClient = mqtt.connect(mqttBrokerUrl);
 
-    client.on('connect', () => {
-      console.log('Connected to MQTT broker');
-      setLoading(false);
-      client.subscribe(topic, { qos: 1 }, (err) => {
-        if (err) {
-          console.error('Failed to subscribe to topic', err);
-        } else {
-          console.log(`Subscribed to topic: ${topic}`);
+      await new Promise<void>((resolve, reject) => {
+        client.on("connect", () => {
+          console.log("[message]: Connected to MQTT broker");
+          setLoading(false);
+          resolve();
+        });
+
+        client.on("error", (err) => {
+          console.log("[err]: Error connecting to MQTT broker");
+          reject(err);
+        });
+      });
+
+      await new Promise<void>((resolve, reject) => {
+        client.subscribe(topic, { qos: 1 }, (err) => {
+          if (err) {
+            console.log("[err]: Error subscribing to MQTT topic");
+            reject(err);
+          } else {
+            console.log("[message]: Subscribed to topic");
+            resolve();
+          }
+        });
+      });
+
+      const sensorKeys: (keyof SensorData)[] = ['sensor1', 'sensor2', 'sensor3', 'sensor4'];
+
+      client.on("message", (topic, message, packet) => {
+        console.log(`[message]: Retained message ${packet.retain}`);
+
+        try {
+          const parsedData: SensorData = JSON.parse(message.toString());
+          
+          console.log(`[message]: Received message ${parsedData}`);
+          setSensorData(parsedData);
+          
+          const timestamp = new Date().getTime();
+
+          setTemperatureSeries((prevSeries) => {
+            const updateSeries = prevSeries.map((sensor, index) => {
+              const sensorKey = sensorKeys[index];
+              const newDataPoint = { x: timestamp, y: parsedData[sensorKey].temperature};
+              return {
+                ...sensor,
+                data: [...sensor.data, newDataPoint].slice(-10)
+              }
+            });
+            return updateSeries;
+          });
+
+          setHumiditySeries((prevSeries) => {
+            const updateSeries = prevSeries.map((sensor, index) => {
+              const sensorKey = sensorKeys[index];
+              const newDataPoint = { x: timestamp, y: parsedData[sensorKey].humidity};
+              return {
+                ...sensor,
+                data: [...sensor.data, newDataPoint].slice(-10)
+              }
+            });
+            return updateSeries;
+          });
+    
+        } catch (err) {
+          console.log("[err]: Error parsing MQTT message");
         }
       });
-    });
+    };
 
-    const sensorKeys: (keyof SensorData)[] = ['sensor1', 'sensor2', 'sensor3', 'sensor4'];
-
-    client.on('message', (topic, message, packet) => {
-      console.log(`Retained message: ${packet.retain}`);
-      try {
-        const parsedData: SensorData = JSON.parse(message.toString());
-        console.log('Received message:', parsedData);
-        setSensorData(parsedData);
-        
-        const timestamp = new Date().getTime(); // Current timestamp
-        
-        // Update temperature series data for each sensor
-        setTemperatureSeries(prevSeries => {
-          const updatedSeries = prevSeries.map((sensor, index) => {
-            const sensorKey = sensorKeys[index]; // Use the mapping array
-            // Create a new entry for the current timestamp and sensor's temperature
-            const newDataPoint = { x: timestamp, y: parsedData[sensorKey].temperature };
-            // Limit the data to the last 10 entries
-            return {
-              ...sensor,
-              data: [...sensor.data, newDataPoint].slice(-10),
-            };
-          });
-          return updatedSeries;
-        });
-
-        // Update humidity series data for each sensor
-        setHumiditySeries(prevSeries => {
-          const updatedSeries = prevSeries.map((sensor, index) => {
-            const sensorKey = sensorKeys[index]; // Use the mapping array
-            // Create a new entry for the current timestamp and sensor's humidity
-            const newDataPoint = { x: timestamp, y: parsedData[sensorKey].humidity };
-            // Limit the data to the last 10 entries
-            return {
-              ...sensor,
-              data: [...sensor.data, newDataPoint].slice(-10),
-            };
-          });
-          return updatedSeries;
-        });
-    
-      } catch (error) {
-        console.error('Error parsing MQTT message:', error);
-      }
-    });
-    
-    client.on('error', (error) => {
-      console.log(`MQTT Client error: ${error}`);
-    });
-
-    client.on('close', () => {
-      console.log('Disconnecting from MQTT server');
-    });
+    connectToMQTT();
 
     return () => {
+      const client: MqttClient = mqtt.connect(mqttBrokerUrl);
       client.end();
     };
   }, []);
 
-  // Chart options for temperature
   const temperatureOptions: ApexOptions = {
     chart: {
       id: 'temperature-realtime',
@@ -200,7 +203,6 @@ const SensorChart: React.FC = () => {
     },
   };
 
-  // Chart options for humidity
   const humidityOptions: ApexOptions = {
     chart: {
       id: 'humidity-realtime',
@@ -241,7 +243,7 @@ const SensorChart: React.FC = () => {
     },
     xaxis: {
       type: 'datetime',
-      range: 50000, // Adjust the range to show about 50 seconds of data
+      range: 50000, 
       labels: {
         formatter: (value: string) => new Date(Number(value)).toLocaleTimeString(),
         style: {
