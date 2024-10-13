@@ -106,8 +106,7 @@ const SensorChart: React.FC = () => {
             sensor4: { temperature: parsedData.sensor4.temperature, humidity: parsedData.sensor4.humidity },
           };
 
-          axios.post("/api/sensor", parsedData)
-            .catch((err) => console.error("[err]: Error posting sensor data", err));
+
           setTemperatureSeries((prevSeries) => {
             const updateSeries = prevSeries.map((sensor, index) => {
               const sensorKey = sensorKeys[index];
