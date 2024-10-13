@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import { ApexOptions } from 'apexcharts';
 import mqtt, { MqttClient } from 'mqtt';
 import { Inter } from 'next/font/google';
+import axios from 'axios';
 
 const inter = Inter({
     weight: ['500'],
@@ -98,6 +99,15 @@ const SensorChart: React.FC = () => {
           
           const timestamp = new Date().getTime();
 
+          const sensorReadings = {
+            sensor1: { temperature: parsedData.sensor1.temperature, humidity: parsedData.sensor1.humidity },
+            sensor2: { temperature: parsedData.sensor2.temperature, humidity: parsedData.sensor2.humidity },
+            sensor3: { temperature: parsedData.sensor3.temperature, humidity: parsedData.sensor3.humidity },
+            sensor4: { temperature: parsedData.sensor4.temperature, humidity: parsedData.sensor4.humidity },
+          };
+
+          axios.post("/api/sensor", parsedData)
+            .catch((err) => console.error("[err]: Error posting sensor data", err));
           setTemperatureSeries((prevSeries) => {
             const updateSeries = prevSeries.map((sensor, index) => {
               const sensorKey = sensorKeys[index];
@@ -176,7 +186,7 @@ const SensorChart: React.FC = () => {
     },
     xaxis: {
       type: 'datetime',
-      range: 50000, // Adjust the range to show about 50 seconds of data
+      range: 50000, 
       labels: {
         formatter: (value: string) => new Date(Number(value)).toLocaleTimeString(),
         style: {
