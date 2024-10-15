@@ -1,7 +1,16 @@
 import { connectToDatabase } from "@/utils/db_connection";
-import user from "@/models/user";
 import type { NextApiRequest, NextApiResponse } from "next";
 import authMiddleware from "@/middleware/auth_middleware";
+import User from "@/models/User";
+import UserSensor from "@/models/UserSensor";
+
+
+interface UserDetailResponse {
+    email: string
+    username: string
+    password: string    
+    sensors: Array<any>
+}
 
 async function handleUserByIdRequests(req: NextApiRequest, res: NextApiResponse) {
     await connectToDatabase();
@@ -18,18 +27,29 @@ async function handleUserByIdRequests(req: NextApiRequest, res: NextApiResponse)
 
 async function getUserDetail(req: NextApiRequest, res: NextApiResponse) {
     const { id } = req.query;
-    const userDetail = await user.findById(id);
+    const userPersonalDetail = await User.findById(id);
 
-    if (!userDetail) {
+    if (!userPersonalDetail) {
         return res.status(404).json({ message: 'User not found' });
     }
+
+    const userDetail: UserDetailResponse = {
+        username: userPersonalDetail.username,
+        email: userPersonalDetail.email,
+        password: userPersonalDetail.password,
+        sensors: []
+    }
+
+    const userSensors = await UserSensor.find({ user_id: id});
+
+    userDetail.sensors = userSensors;
 
     return res.status(200).json(userDetail);
 }
 
 async function updateUserDetail(req: NextApiRequest, res: NextApiResponse) {
     const { id } = req.query;
-    const updatedUser = await user.findByIdAndUpdate(id);
+    const updatedUser = await User.findByIdAndUpdate(id);
 
     return res.status(200).json(updatedUser);
 }

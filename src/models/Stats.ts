@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-export interface History extends mongoose.Document {
+export interface Stats extends mongoose.Document {
     max_temperature: number
     min_temperature: number
     min_humidty: number   
@@ -11,7 +11,7 @@ export interface History extends mongoose.Document {
     user_id: Schema.Types.ObjectId
 }
 
-const HistorySchema = new mongoose.Schema<History>(
+const StatsSchema = new mongoose.Schema<Stats>(
     {
         user_id: {
             type: Schema.Types.ObjectId,
@@ -43,4 +43,4 @@ const HistorySchema = new mongoose.Schema<History>(
     { timestamps: true }
 );
 
-export default mongoose.models.History || mongoose.model<History>("History", HistorySchema);
+export default mongoose.models.Stats || mongoose.model<Stats>("Stats", StatsSchema);

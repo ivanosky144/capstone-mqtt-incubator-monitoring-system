@@ -1,7 +1,7 @@
-import user from "@/models/user";
 import { comparePassword, generateToken } from "@/libs/auth";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "@/utils/db_connection";
+import User from "@/models/User";
 
 export default async function loginHandler(req: NextApiRequest, res: NextApiResponse) {
     await connectToDatabase();
@@ -13,7 +13,7 @@ export default async function loginHandler(req: NextApiRequest, res: NextApiResp
     const { email, password } = req.body;
 
     try {
-        const existingUser = await user.findOne({ email });
+        const existingUser = await User.findOne({ email });
         if (!existingUser) {
             return res.status(404).json({ message: 'User not found' });
         }

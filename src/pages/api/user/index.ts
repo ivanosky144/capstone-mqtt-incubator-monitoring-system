@@ -1,7 +1,8 @@
 import { connectToDatabase } from "@/utils/db_connection";
-import user from "@/models/user";
+import user from "@/models/User";
 import type { NextApiRequest, NextApiResponse } from "next";
 import authMiddleware from "@/middleware/auth_middleware";
+import User from "@/models/User";
 
 async function handleUserRequests(req: NextApiRequest, res: NextApiResponse) {
     await connectToDatabase();
@@ -15,7 +16,7 @@ async function handleUserRequests(req: NextApiRequest, res: NextApiResponse) {
 }
 
 async function getAllUsers(res: NextApiResponse) {
-    const users = await user.find();
+    const users = await User.find();
     return res.status(200).json(users);
 }
 

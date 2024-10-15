@@ -3,147 +3,116 @@ import dynamic from 'next/dynamic';
 import { ApexOptions } from 'apexcharts';
 import mqtt, { MqttClient } from 'mqtt';
 import { Inter } from 'next/font/google';
-import axios from 'axios';
-
-const inter = Inter({
-    weight: ['500'],
-    subsets: ['latin']
-});
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
+const inter = Inter({
+  weight: ['500'],
+  subsets: ['latin'],
+});
+
 interface SensorData {
-  sensor1: {
-    temperature: number;
-    humidity: number;
-  };
-  sensor2: {
-    temperature: number;
-    humidity: number;
-  };
-  sensor3: {
-    temperature: number;
-    humidity: number;
-  };
-  sensor4: {
-    temperature: number;
-    humidity: number;
-  };
+  temperature: number
+  humidity: number
 }
 
 const SensorChart: React.FC = () => {
-  const [sensorData, setSensorData] = useState<SensorData | null>(null);
-  const [temperatureSeries, setTemperatureSeries] = useState<{
-    name: string;
-    data: { x: number; y: number }[];
-  }[]>([
-    { name: 'Sensor 1', data: [] },
-    { name: 'Sensor 2', data: [] },
-    { name: 'Sensor 3', data: [] },
-    { name: 'Sensor 4', data: [] },
+  const [sensorData, setSensorData] = useState<SensorData[]>([]);
+  const [temperatureSeries, setTemperatureSeries] = useState([
+    { name: 'Sensor 1', data: [] as { x: number; y: number }[] },
+    { name: 'Sensor 2', data: [] as { x: number; y: number }[] },
+    { name: 'Sensor 3', data: [] as { x: number; y: number }[] },
+    { name: 'Sensor 4', data: [] as { x: number; y: number }[] },
+  ]);
+  const [humiditySeries, setHumiditySeries] = useState([
+    { name: 'Sensor 1', data: [] as { x: number; y: number }[] },
+    { name: 'Sensor 2', data: [] as { x: number; y: number }[] },
+    { name: 'Sensor 3', data: [] as { x: number; y: number }[] },
+    { name: 'Sensor 4', data: [] as { x: number; y: number }[] },
   ]);
 
-  const [humiditySeries, setHumiditySeries] = useState<{
-    name: string;
-    data: { x: number; y: number }[];
-  }[]>([
-    { name: 'Sensor 1', data: [] },
-    { name: 'Sensor 2', data: [] },
-    { name: 'Sensor 3', data: [] },
-    { name: 'Sensor 4', data: [] },
-  ]);
-
-  const mqttBrokerUrl = process.env.NEXT_PUBLIC_MQTT_CONNECTION || "mosquitto.org";
   const [loading, setLoading] = useState(true);
-  const topic = "sensor/dht";
+  const [temperatureRange, setTemperatureRange] = useState({ min: 0, max: 50 });
+  const [humidityRange, setHumidityRange] = useState({ min: 0, max: 100 });
+
+  const mqttBrokerUrl = 'wss://test.mosquitto.org:8081';
+  const topic = 'sensor/dht';
+  let client: MqttClient | null = null;
 
   useEffect(() => {
-    const connectToMQTT = async () => {
-      const client: MqttClient = mqtt.connect(mqttBrokerUrl);
+    client = mqtt.connect(mqttBrokerUrl);
 
-      await new Promise<void>((resolve, reject) => {
-        client.on("connect", () => {
-          console.log("[message]: Connected to MQTT broker");
-          setLoading(false);
-          resolve();
-        });
-
-        client.on("error", (err) => {
-          console.log("[err]: Error connecting to MQTT broker");
-          reject(err);
-        });
+    client.on('connect', () => {
+      console.log('[MQTT] Connected to broker');
+      setLoading(false);
+      client?.subscribe(topic, { qos: 1 }, (err) => {
+        if (err) console.error('[MQTT] Subscription error:', err);
+        else console.log(`[MQTT] Subscribed to topic: ${topic}`);
       });
+    });
 
-      await new Promise<void>((resolve, reject) => {
-        client.subscribe(topic, { qos: 1 }, (err) => {
-          if (err) {
-            console.log("[err]: Error subscribing to MQTT topic");
-            reject(err);
-          } else {
-            console.log("[message]: Subscribed to topic");
-            resolve();
-          }
-        });
-      });
+    client.on('error', (err) => console.error('[MQTT] Error:', err));
+    client.on('offline', () => console.warn('[MQTT] Client offline'));
+    client.on('reconnect', () => console.log('[MQTT] Reconnecting...'));
 
-      const sensorKeys: (keyof SensorData)[] = ['sensor1', 'sensor2', 'sensor3', 'sensor4'];
-
-      client.on("message", (topic, message, packet) => {
-        console.log(`[message]: Retained message ${packet.retain}`);
-
-        try {
-          const parsedData: SensorData = JSON.parse(message.toString());
-          
-          console.log(`[message]: Received message ${parsedData}`);
-          setSensorData(parsedData);
-          
-          const timestamp = new Date().getTime();
-
-          const sensorReadings = {
-            sensor1: { temperature: parsedData.sensor1.temperature, humidity: parsedData.sensor1.humidity },
-            sensor2: { temperature: parsedData.sensor2.temperature, humidity: parsedData.sensor2.humidity },
-            sensor3: { temperature: parsedData.sensor3.temperature, humidity: parsedData.sensor3.humidity },
-            sensor4: { temperature: parsedData.sensor4.temperature, humidity: parsedData.sensor4.humidity },
-          };
-
-
-          setTemperatureSeries((prevSeries) => {
-            const updateSeries = prevSeries.map((sensor, index) => {
-              const sensorKey = sensorKeys[index];
-              const newDataPoint = { x: timestamp, y: parsedData[sensorKey].temperature};
-              return {
-                ...sensor,
-                data: [...sensor.data, newDataPoint].slice(-10)
-              }
-            });
-            return updateSeries;
-          });
-
-          setHumiditySeries((prevSeries) => {
-            const updateSeries = prevSeries.map((sensor, index) => {
-              const sensorKey = sensorKeys[index];
-              const newDataPoint = { x: timestamp, y: parsedData[sensorKey].humidity};
-              return {
-                ...sensor,
-                data: [...sensor.data, newDataPoint].slice(-10)
-              }
-            });
-            return updateSeries;
-          });
+    client.on('message', (receivedTopic, message) => {
+      console.log(`[MQTT] Message received on ${receivedTopic}:`, message.toString());
     
-        } catch (err) {
-          console.log("[err]: Error parsing MQTT message");
-        }
-      });
-    };
+      try {
+        const parsedData: SensorData[] = JSON.parse(message.toString());
+        setSensorData(parsedData);
+        updateChartSeries(parsedData);
 
-    connectToMQTT();
+        // saveSensorData(parsedData);
+      } catch (err) {
+        console.error('[MQTT] Message parse error:', err);
+      }
+    });
+    
 
     return () => {
-      const client: MqttClient = mqtt.connect(mqttBrokerUrl);
-      client.end();
+      client?.end();
     };
   }, []);
+
+  const updateChartSeries = (data: SensorData[]) => {
+    const timestamp = new Date().getTime();
+  
+    setTemperatureSeries((prevSeries) =>
+      prevSeries.map((sensor, index) => ({
+        ...sensor,
+        data: [...sensor.data, { x: timestamp, y: data[index]?.temperature }].slice(-10),
+      }))
+    );
+  
+    setHumiditySeries((prevSeries) =>
+      prevSeries.map((sensor, index) => ({
+        ...sensor,
+        data: [...sensor.data, { x: timestamp, y: data[index]?.humidity }].slice(-10),
+      }))
+    );
+  };
+  
+
+  // const saveSensorData = async (data: SensorData[]) => {
+  //   const payload: any = {
+  //     user_id: 1,
+  //   };
+
+  //   for (let i = 1; i < 5; i++) {
+  //     payload.sensor_id = i;
+  //     payload.temperature = data[i]?.temperature;
+  //     payload.humidity = data[i]?.humidity;
+
+  //     const response = await fetch('/api/sensor', {
+  //       method: 'POST',
+  //       body: payload
+  //     });
+
+  //     console.log(response);
+  //   }
+
+  // };
 
   const temperatureOptions: ApexOptions = {
     chart: {
@@ -195,8 +164,8 @@ const SensorChart: React.FC = () => {
       },
     },
     yaxis: {
-      min: 0,
-      max: 60,
+      min: temperatureRange.min,
+      max: temperatureRange.max,
       title: {
         text: 'Temperature (°C)',
         style: {
@@ -262,7 +231,8 @@ const SensorChart: React.FC = () => {
       },
     },
     yaxis: {
-      max: 100,
+      min: humidityRange.min,
+      max: humidityRange.max,
       title: {
         text: 'Humidity (%)',
         style: {
@@ -279,18 +249,60 @@ const SensorChart: React.FC = () => {
   };
 
   return (
-    <div className='p-5 w-[90%] flex-4 bg-ultralight_purple'>
+    <div className="p-5 w-[90%] flex-4 bg-ultralight_purple">
       {loading ? (
-        <div>
-          <p>Connecting to MQTT broker...</p>
+        <div className="flex justify-center items-center h-screen">
+          <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-purple-500"></div>
         </div>
       ) : sensorData ? (
-        <div className='flex flex-col gap-5'>
-          <div id='temperature-chart' className='bg-white p-2 rounded-lg'>
-            <ReactApexChart options={temperatureOptions} series={temperatureSeries} type="line" height={350} />
+        <div className="flex flex-col gap-5">
+          <div className="flex gap-4 justify-between">
+            <div className="flex flex-col gap-3 w-[15%]">
+              <h2>Set Temperature Range</h2>
+              <div className="flex flex-col">
+                <label>Min</label>
+                <select onChange={(e) => setTemperatureRange({ ...temperatureRange, min: Number(e.target.value)})}>
+                  {[...Array(50).keys()].map((n) => (
+                    <option key={n} value={n+1}>{n+1}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex flex-col">
+                <label>Max</label>
+                <select onChange={(e) => setTemperatureRange({ ...temperatureRange, max: Number(e.target.value)})}>
+                  {[...Array(50).keys()].map((n) => (
+                    <option key={n} value={n+1}>{n+1}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="bg-white p-2 rounded-lg w-[85%]">
+              <ReactApexChart options={temperatureOptions} series={temperatureSeries} type="line" height={350} />
+            </div>
           </div>
-          <div id='humidity-chart' className='bg-white p-2 rounded-lg'>
-            <ReactApexChart options={humidityOptions} series={humiditySeries} type="line" height={350} />
+          <div className="flex gap-4 justify-between">
+            <div className="flex flex-col gap-3 w-[15%]">
+              <h2>Set Humidity Range</h2>
+              <div className="flex flex-col">
+                <label>Min</label>
+                <select onChange={(e) => setHumidityRange({ ...humidityRange, min: Number(e.target.value)})}>
+                  {[...Array(50).keys()].map((n) => (
+                    <option key={n} value={n+1}>{n+1}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex flex-col">
+                <label>Max</label>
+                <select onChange={(e) => setHumidityRange({ ...humidityRange, max: Number(e.target.value)})}>
+                  {[...Array(50).keys()].map((n) => (
+                    <option key={n} value={n+1}>{n+1}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="bg-white p-2 rounded-lg w-[85%]">
+              <ReactApexChart options={humidityOptions} series={humiditySeries} type="line" height={350} />
+            </div>
           </div>
         </div>
       ) : (

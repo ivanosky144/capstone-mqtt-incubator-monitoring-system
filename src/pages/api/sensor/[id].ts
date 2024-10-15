@@ -4,17 +4,13 @@ import authMiddleware from "@/middleware/auth_middleware";
 import UserSensor from "@/models/UserSensor";
 import SensorReading from "@/models/SensorReading";
 
-async function handleSensorRequest(req: NextApiRequest, res: NextApiResponse) {
+async function handleSensorByIdRequest(req: NextApiRequest, res: NextApiResponse) {
     await connectToDatabase();
 
     switch(req.method) {
 
         case 'POST':
             return saveSensorReading(req, res);
-        case 'GET':
-            return getSensorDataHistories(req, res);
-        case 'DELETE':
-            return deleteSensorDataHistory(req, res);
         default:
             return
     }
@@ -48,31 +44,5 @@ async function saveSensorReading(req: NextApiRequest, res: NextApiResponse) {
     }
 }
 
-async function getSensorDataHistories(req: NextApiRequest, res: NextApiResponse) {
-    try {
-        const { user_id } = req.body;
 
-        let data = [];
-        for (let i = 1; i < 4; i++) {
-            const userSensor = await UserSensor.find({ user_id, sensor_id: i});
-
-            const sensorReading = await SensorReading.find({ user_sensor_id: userSensor });
-
-            data.push(sensorReading);
-        }
-
-        return res.status(201).json({ message: "Sensor data histories retrieved successfully" });
-
-    } catch (error) {
-        return res.status(500).json(error);
-    }
-}
-
-async function deleteSensorDataHistory(req: NextApiRequest, res: NextApiResponse) {
-    try {
-    } catch (error) {
-        return res.status(500).json(error);
-    }
-}
-
-export default authMiddleware(handleSensorRequest);
+export default authMiddleware(handleSensorByIdRequest);
