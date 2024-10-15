@@ -13,8 +13,7 @@ const UserSensorSchema = new mongoose.Schema<UserSensor>(
             required: true
         },
         sensor_id: {
-            type: Schema.Types.ObjectId,
-            ref: "Sensor",
+            type: Number,
             required: true
         }
     }

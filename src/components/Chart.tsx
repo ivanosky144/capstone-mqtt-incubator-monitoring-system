@@ -63,7 +63,7 @@ const SensorChart: React.FC = () => {
         setSensorData(parsedData);
         updateChartSeries(parsedData);
 
-        // saveSensorData(parsedData);
+        saveSensorData(parsedData);
       } catch (err) {
         console.error('[MQTT] Message parse error:', err);
       }
@@ -94,25 +94,35 @@ const SensorChart: React.FC = () => {
   };
   
 
-  // const saveSensorData = async (data: SensorData[]) => {
-  //   const payload: any = {
-  //     user_id: 1,
-  //   };
+  const saveSensorData = async (data: SensorData[]) => {
+    const payload: any = {
+      user_id: '670dfb6eccaff40c3f3b713e',
+    };
 
-  //   for (let i = 1; i < 5; i++) {
-  //     payload.sensor_id = i;
-  //     payload.temperature = data[i]?.temperature;
-  //     payload.humidity = data[i]?.humidity;
+    for (let i = 1; i < 5; i++) {
+      payload.sensor_id = i;
+      
+      if (data[i]) {
+        payload.temperature = data[i]?.temperature;
+        payload.humidity = data[i]?.humidity;
+      }
 
-  //     const response = await fetch('/api/sensor', {
-  //       method: 'POST',
-  //       body: payload
-  //     });
+      console.log(data[i]?.temperature)
+      console.log(payload.temperature)
+      console.log(payload)
 
-  //     console.log(response);
-  //   }
+      const response = await fetch('/api/sensor', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json', 
+        },
+        body: JSON.stringify(payload)
+      });
 
-  // };
+      console.log(response);
+    }
+
+  };
 
   const temperatureOptions: ApexOptions = {
     chart: {
@@ -261,7 +271,7 @@ const SensorChart: React.FC = () => {
               <h2>Set Temperature Range</h2>
               <div className="flex flex-col">
                 <label>Min</label>
-                <select onChange={(e) => setTemperatureRange({ ...temperatureRange, min: Number(e.target.value)})}>
+                <select onChange={(e) => setTemperatureRange({ ...temperatureRange, min: Number(e.target.value)})} value={temperatureRange.min}>
                   {[...Array(50).keys()].map((n) => (
                     <option key={n} value={n+1}>{n+1}</option>
                   ))}
@@ -269,7 +279,7 @@ const SensorChart: React.FC = () => {
               </div>
               <div className="flex flex-col">
                 <label>Max</label>
-                <select onChange={(e) => setTemperatureRange({ ...temperatureRange, max: Number(e.target.value)})}>
+                <select onChange={(e) => setTemperatureRange({ ...temperatureRange, max: Number(e.target.value)})} value={temperatureRange.max}>
                   {[...Array(50).keys()].map((n) => (
                     <option key={n} value={n+1}>{n+1}</option>
                   ))}
@@ -285,16 +295,16 @@ const SensorChart: React.FC = () => {
               <h2>Set Humidity Range</h2>
               <div className="flex flex-col">
                 <label>Min</label>
-                <select onChange={(e) => setHumidityRange({ ...humidityRange, min: Number(e.target.value)})}>
-                  {[...Array(50).keys()].map((n) => (
+                <select onChange={(e) => setHumidityRange({ ...humidityRange, min: Number(e.target.value)})} value={humidityRange.min}>
+                  {[...Array(100).keys()].map((n) => (
                     <option key={n} value={n+1}>{n+1}</option>
                   ))}
                 </select>
               </div>
               <div className="flex flex-col">
                 <label>Max</label>
-                <select onChange={(e) => setHumidityRange({ ...humidityRange, max: Number(e.target.value)})}>
-                  {[...Array(50).keys()].map((n) => (
+                <select onChange={(e) => setHumidityRange({ ...humidityRange, max: Number(e.target.value)})} value={humidityRange.max}>
+                  {[...Array(100).keys()].map((n) => (
                     <option key={n} value={n+1}>{n+1}</option>
                   ))}
                 </select>

@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import authMiddleware from "@/middleware/auth_middleware";
 import UserSensor from "@/models/UserSensor";
 import SensorReading from "@/models/SensorReading";
+import mongoose from "mongoose";
 
 async function handleSensorRequest(req: NextApiRequest, res: NextApiResponse) {
     await connectToDatabase();
@@ -22,20 +23,20 @@ async function handleSensorRequest(req: NextApiRequest, res: NextApiResponse) {
 
 async function saveSensorReading(req: NextApiRequest, res: NextApiResponse) {
     try {
-
         const { user_id, sensor_id, temperature, humidity } = req.body;
 
         if (!user_id || !sensor_id || !temperature || !humidity) {
             return res.status(400).json({ message: "All fields are required" });
         }
 
-        const userSensor: any = await UserSensor.find({ user_id, sensor_id });
+        const userSensor: any = await UserSensor.findOne({ user_id, sensor_id });
+        
         if (!userSensor) {
-            return res.status(403).json({ message: "Invalid sensor for this user"});
+            return res.status(403).json({ message: "Invalid sensor for this user" });
         }
 
         const newReading = new SensorReading({
-            user_sensor_id: userSensor._id,
+            user_sensor_id: userSensor._id,  
             temperature,
             humidity
         });
@@ -44,9 +45,10 @@ async function saveSensorReading(req: NextApiRequest, res: NextApiResponse) {
 
         return res.status(201).json({ message: "Sensor data saved successfully" });
     } catch (error) {
-        return res.status(500).json(error);
+        return res.status(500).json({ message: "An internal server error occurred", error });
     }
 }
+
 
 async function getSensorDataHistories(req: NextApiRequest, res: NextApiResponse) {
     try {
@@ -75,4 +77,4 @@ async function deleteSensorDataHistory(req: NextApiRequest, res: NextApiResponse
     }
 }
 
-export default authMiddleware(handleSensorRequest);
+export default handleSensorRequest;

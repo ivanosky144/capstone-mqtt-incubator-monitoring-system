@@ -25,7 +25,7 @@ export default async function registerHandler(req: NextApiRequest, res: NextApiR
         await newUser.save();
 
         for (let i = 1; i <= 4; i++) {
-            const newUserSensor = new UserSensor({ newUser, sensor_id: i});
+            const newUserSensor = new UserSensor({ user_id: newUser._id, sensor_id: i});
             await newUserSensor.save();
         }
 
