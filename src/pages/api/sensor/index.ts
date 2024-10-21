@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import authMiddleware from "@/middleware/auth_middleware";
 import UserSensor from "@/models/UserSensor";
 import SensorReading from "@/models/SensorReading";
+import Stats from "@/models/Stats";
 import mongoose from "mongoose";
 
 async function handleSensorRequest(req: NextApiRequest, res: NextApiResponse) {
@@ -52,18 +53,36 @@ async function saveSensorReading(req: NextApiRequest, res: NextApiResponse) {
 
 async function getSensorDataHistories(req: NextApiRequest, res: NextApiResponse) {
     try {
-        const { user_id } = req.body;
+        const { user_id } = req.query;
 
-        let data = [];
-        for (let i = 1; i < 4; i++) {
-            const userSensor = await UserSensor.find({ user_id, sensor_id: i});
+        let data: any = {};
+        for (let i = 1; i <= 4; i++) {
+            const userSensor = await UserSensor.find({ user_id: user_id, sensor_id: i});
+            const sensorReading = await SensorReading.find({ user_sensor_id: userSensor[0]._id });
+            const averageHumidity = sensorReading.reduce((sum, entry) => sum+entry, 0)/sensorReading.length;
+            const averageTemperature = sensorReading.reduce((sum, entry) => sum+entry, 0)/sensorReading.length;
 
-            const sensorReading = await SensorReading.find({ user_sensor_id: userSensor });
+            const minHumidity = Math.min(...sensorReading.map(entry => entry.humidity));
+            const maxHumidity = Math.max(...sensorReading.map(entry => entry.humidity));
+            const minTemperature = Math.min(...sensorReading.map(entry => entry.temperature));
+            const maxTemperature = Math.max(...sensorReading.map(entry => entry.temperature));
 
-            data.push(sensorReading);
+            let sensorStats = {
+                avg_humidity: averageHumidity,
+                avg_temperature: averageTemperature,
+                min_humidity: minHumidity,
+                max_humidity: maxHumidity,
+                min_temp: minTemperature,
+                max_temp: maxTemperature
+            };
+
+            data[`sensor${i}`] = {
+                sensorData: sensorReading,
+                sensorStats
+            };
         }
 
-        return res.status(201).json({ message: "Sensor data histories retrieved successfully" });
+        return res.status(201).json({ data, message: "Sensor data histories retrieved successfully" });
 
     } catch (error) {
         return res.status(500).json(error);

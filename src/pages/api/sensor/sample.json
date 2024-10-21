@@ -1,0 +1,481 @@
+{
+    "data": {
+        "sensor1": [
+            {
+                "_id": "670dfd8af493f282ca3be80e",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7140",
+                "temperature": 32.3,
+                "humidity": 56.4,
+                "createdAt": "2024-10-15T05:28:42.034Z",
+                "updatedAt": "2024-10-15T05:28:42.034Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfd8ff493f282ca3be81a",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7140",
+                "temperature": 32.3,
+                "humidity": 56.6,
+                "createdAt": "2024-10-15T05:28:47.254Z",
+                "updatedAt": "2024-10-15T05:28:47.254Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfd93f493f282ca3be826",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7140",
+                "temperature": 32.3,
+                "humidity": 56.6,
+                "createdAt": "2024-10-15T05:28:51.990Z",
+                "updatedAt": "2024-10-15T05:28:51.990Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfd98f493f282ca3be832",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7140",
+                "temperature": 32.3,
+                "humidity": 56.4,
+                "createdAt": "2024-10-15T05:28:56.920Z",
+                "updatedAt": "2024-10-15T05:28:56.920Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfd9df493f282ca3be83e",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7140",
+                "temperature": 32.3,
+                "humidity": 56.1,
+                "createdAt": "2024-10-15T05:29:01.925Z",
+                "updatedAt": "2024-10-15T05:29:01.925Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfda2f493f282ca3be84a",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7140",
+                "temperature": 32.3,
+                "humidity": 56,
+                "createdAt": "2024-10-15T05:29:06.943Z",
+                "updatedAt": "2024-10-15T05:29:06.943Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfda7f493f282ca3be856",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7140",
+                "temperature": 32.3,
+                "humidity": 56,
+                "createdAt": "2024-10-15T05:29:11.925Z",
+                "updatedAt": "2024-10-15T05:29:11.925Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfdacf493f282ca3be862",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7140",
+                "temperature": 32.3,
+                "humidity": 56.1,
+                "createdAt": "2024-10-15T05:29:16.925Z",
+                "updatedAt": "2024-10-15T05:29:16.925Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfdb1f493f282ca3be86e",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7140",
+                "temperature": 32.3,
+                "humidity": 56.2,
+                "createdAt": "2024-10-15T05:29:21.985Z",
+                "updatedAt": "2024-10-15T05:29:21.985Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfdb6f493f282ca3be87a",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7140",
+                "temperature": 32.3,
+                "humidity": 56.4,
+                "createdAt": "2024-10-15T05:29:26.982Z",
+                "updatedAt": "2024-10-15T05:29:26.982Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfdbbf493f282ca3be886",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7140",
+                "temperature": 32.3,
+                "humidity": 56.5,
+                "createdAt": "2024-10-15T05:29:31.935Z",
+                "updatedAt": "2024-10-15T05:29:31.935Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfdd5f493f282ca3be892",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7140",
+                "temperature": 32.3,
+                "humidity": 57.4,
+                "createdAt": "2024-10-15T05:29:57.355Z",
+                "updatedAt": "2024-10-15T05:29:57.355Z",
+                "__v": 0
+            },
+            {
+                "_id": "670e0d67f493f282ca3be89e",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7140",
+                "temperature": 33,
+                "humidity": 49.9,
+                "createdAt": "2024-10-15T06:36:23.134Z",
+                "updatedAt": "2024-10-15T06:36:23.134Z",
+                "__v": 0
+            }
+        ],
+        "sensor2": [
+            {
+                "_id": "670dfd8af493f282ca3be811",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7142",
+                "temperature": 32.8,
+                "humidity": 54.6,
+                "createdAt": "2024-10-15T05:28:42.241Z",
+                "updatedAt": "2024-10-15T05:28:42.241Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfd8ff493f282ca3be81d",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7142",
+                "temperature": 32.8,
+                "humidity": 54.7,
+                "createdAt": "2024-10-15T05:28:47.404Z",
+                "updatedAt": "2024-10-15T05:28:47.404Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfd94f493f282ca3be829",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7142",
+                "temperature": 32.8,
+                "humidity": 54.8,
+                "createdAt": "2024-10-15T05:28:52.139Z",
+                "updatedAt": "2024-10-15T05:28:52.139Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfd99f493f282ca3be835",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7142",
+                "temperature": 32.8,
+                "humidity": 54.7,
+                "createdAt": "2024-10-15T05:28:57.227Z",
+                "updatedAt": "2024-10-15T05:28:57.227Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfd9ef493f282ca3be841",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7142",
+                "temperature": 32.8,
+                "humidity": 54.5,
+                "createdAt": "2024-10-15T05:29:02.160Z",
+                "updatedAt": "2024-10-15T05:29:02.160Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfda3f493f282ca3be84d",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7142",
+                "temperature": 32.8,
+                "humidity": 54.4,
+                "createdAt": "2024-10-15T05:29:07.382Z",
+                "updatedAt": "2024-10-15T05:29:07.382Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfda8f493f282ca3be859",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7142",
+                "temperature": 32.8,
+                "humidity": 54.4,
+                "createdAt": "2024-10-15T05:29:12.175Z",
+                "updatedAt": "2024-10-15T05:29:12.175Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfdadf493f282ca3be865",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7142",
+                "temperature": 32.8,
+                "humidity": 54.4,
+                "createdAt": "2024-10-15T05:29:17.249Z",
+                "updatedAt": "2024-10-15T05:29:17.249Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfdb2f493f282ca3be871",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7142",
+                "temperature": 32.8,
+                "humidity": 54.5,
+                "createdAt": "2024-10-15T05:29:22.303Z",
+                "updatedAt": "2024-10-15T05:29:22.303Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfdb7f493f282ca3be87d",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7142",
+                "temperature": 32.8,
+                "humidity": 54.6,
+                "createdAt": "2024-10-15T05:29:27.234Z",
+                "updatedAt": "2024-10-15T05:29:27.234Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfdbcf493f282ca3be889",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7142",
+                "temperature": 32.8,
+                "humidity": 54.7,
+                "createdAt": "2024-10-15T05:29:32.202Z",
+                "updatedAt": "2024-10-15T05:29:32.202Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfdd5f493f282ca3be895",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7142",
+                "temperature": 32.8,
+                "humidity": 55.6,
+                "createdAt": "2024-10-15T05:29:57.518Z",
+                "updatedAt": "2024-10-15T05:29:57.518Z",
+                "__v": 0
+            },
+            {
+                "_id": "670e0d67f493f282ca3be8a1",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7142",
+                "temperature": 33.6,
+                "humidity": 48.8,
+                "createdAt": "2024-10-15T06:36:23.483Z",
+                "updatedAt": "2024-10-15T06:36:23.483Z",
+                "__v": 0
+            }
+        ],
+        "sensor3": [
+            {
+                "_id": "670dfd8af493f282ca3be814",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7144",
+                "temperature": 32.4,
+                "humidity": 56,
+                "createdAt": "2024-10-15T05:28:42.377Z",
+                "updatedAt": "2024-10-15T05:28:42.377Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfd8ff493f282ca3be820",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7144",
+                "temperature": 32.4,
+                "humidity": 56.1,
+                "createdAt": "2024-10-15T05:28:47.539Z",
+                "updatedAt": "2024-10-15T05:28:47.539Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfd94f493f282ca3be82c",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7144",
+                "temperature": 32.4,
+                "humidity": 56.1,
+                "createdAt": "2024-10-15T05:28:52.295Z",
+                "updatedAt": "2024-10-15T05:28:52.295Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfd99f493f282ca3be838",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7144",
+                "temperature": 32.4,
+                "humidity": 55.9,
+                "createdAt": "2024-10-15T05:28:57.378Z",
+                "updatedAt": "2024-10-15T05:28:57.378Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfd9ef493f282ca3be844",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7144",
+                "temperature": 32.4,
+                "humidity": 55.7,
+                "createdAt": "2024-10-15T05:29:02.304Z",
+                "updatedAt": "2024-10-15T05:29:02.304Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfda3f493f282ca3be850",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7144",
+                "temperature": 32.4,
+                "humidity": 55.6,
+                "createdAt": "2024-10-15T05:29:07.516Z",
+                "updatedAt": "2024-10-15T05:29:07.516Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfda8f493f282ca3be85c",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7144",
+                "temperature": 32.4,
+                "humidity": 55.7,
+                "createdAt": "2024-10-15T05:29:12.319Z",
+                "updatedAt": "2024-10-15T05:29:12.319Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfdadf493f282ca3be868",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7144",
+                "temperature": 32.4,
+                "humidity": 55.7,
+                "createdAt": "2024-10-15T05:29:17.401Z",
+                "updatedAt": "2024-10-15T05:29:17.401Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfdb2f493f282ca3be874",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7144",
+                "temperature": 32.4,
+                "humidity": 55.8,
+                "createdAt": "2024-10-15T05:29:22.457Z",
+                "updatedAt": "2024-10-15T05:29:22.457Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfdb7f493f282ca3be880",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7144",
+                "temperature": 32.4,
+                "humidity": 55.9,
+                "createdAt": "2024-10-15T05:29:27.503Z",
+                "updatedAt": "2024-10-15T05:29:27.503Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfdbcf493f282ca3be88c",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7144",
+                "temperature": 32.4,
+                "humidity": 56.1,
+                "createdAt": "2024-10-15T05:29:32.348Z",
+                "updatedAt": "2024-10-15T05:29:32.348Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfdd5f493f282ca3be898",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7144",
+                "temperature": 32.4,
+                "humidity": 57.1,
+                "createdAt": "2024-10-15T05:29:57.657Z",
+                "updatedAt": "2024-10-15T05:29:57.657Z",
+                "__v": 0
+            },
+            {
+                "_id": "670e0d67f493f282ca3be8a4",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7144",
+                "temperature": 33.1,
+                "humidity": 49.7,
+                "createdAt": "2024-10-15T06:36:23.911Z",
+                "updatedAt": "2024-10-15T06:36:23.911Z",
+                "__v": 0
+            }
+        ],
+        "sensor4": [
+            {
+                "_id": "670dfd8af493f282ca3be817",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7146",
+                "temperature": 32.4,
+                "humidity": 56,
+                "createdAt": "2024-10-15T05:28:42.533Z",
+                "updatedAt": "2024-10-15T05:28:42.533Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfd8ff493f282ca3be823",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7146",
+                "temperature": 32.4,
+                "humidity": 56.1,
+                "createdAt": "2024-10-15T05:28:47.691Z",
+                "updatedAt": "2024-10-15T05:28:47.691Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfd94f493f282ca3be82f",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7146",
+                "temperature": 32.4,
+                "humidity": 56.1,
+                "createdAt": "2024-10-15T05:28:52.436Z",
+                "updatedAt": "2024-10-15T05:28:52.436Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfd99f493f282ca3be83b",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7146",
+                "temperature": 32.4,
+                "humidity": 55.9,
+                "createdAt": "2024-10-15T05:28:57.575Z",
+                "updatedAt": "2024-10-15T05:28:57.575Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfd9ef493f282ca3be847",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7146",
+                "temperature": 32.4,
+                "humidity": 55.7,
+                "createdAt": "2024-10-15T05:29:02.444Z",
+                "updatedAt": "2024-10-15T05:29:02.444Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfda3f493f282ca3be853",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7146",
+                "temperature": 32.4,
+                "humidity": 55.6,
+                "createdAt": "2024-10-15T05:29:07.674Z",
+                "updatedAt": "2024-10-15T05:29:07.674Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfda8f493f282ca3be85f",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7146",
+                "temperature": 32.4,
+                "humidity": 55.7,
+                "createdAt": "2024-10-15T05:29:12.460Z",
+                "updatedAt": "2024-10-15T05:29:12.460Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfdadf493f282ca3be86b",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7146",
+                "temperature": 32.4,
+                "humidity": 55.7,
+                "createdAt": "2024-10-15T05:29:17.541Z",
+                "updatedAt": "2024-10-15T05:29:17.541Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfdb2f493f282ca3be877",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7146",
+                "temperature": 32.4,
+                "humidity": 55.8,
+                "createdAt": "2024-10-15T05:29:22.602Z",
+                "updatedAt": "2024-10-15T05:29:22.602Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfdb7f493f282ca3be883",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7146",
+                "temperature": 32.4,
+                "humidity": 55.9,
+                "createdAt": "2024-10-15T05:29:27.642Z",
+                "updatedAt": "2024-10-15T05:29:27.642Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfdbcf493f282ca3be88f",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7146",
+                "temperature": 32.4,
+                "humidity": 56.1,
+                "createdAt": "2024-10-15T05:29:32.487Z",
+                "updatedAt": "2024-10-15T05:29:32.487Z",
+                "__v": 0
+            },
+            {
+                "_id": "670dfdd5f493f282ca3be89b",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7146",
+                "temperature": 32.4,
+                "humidity": 57.1,
+                "createdAt": "2024-10-15T05:29:57.797Z",
+                "updatedAt": "2024-10-15T05:29:57.797Z",
+                "__v": 0
+            },
+            {
+                "_id": "670e0d68f493f282ca3be8a7",
+                "user_sensor_id": "670dfb6eccaff40c3f3b7146",
+                "temperature": 33.1,
+                "humidity": 49.7,
+                "createdAt": "2024-10-15T06:36:24.346Z",
+                "updatedAt": "2024-10-15T06:36:24.346Z",
+                "__v": 0
+            }
+        ]
+    },
+    "message": "Sensor data histories retrieved successfully"
+}

@@ -8,14 +8,14 @@ export interface Stats extends mongoose.Document {
     avg_temperature: number   
     avg_humidity: number   
     date: Date   
-    user_id: Schema.Types.ObjectId
+    user_sensor_id: Schema.Types.ObjectId
 }
 
 const StatsSchema = new mongoose.Schema<Stats>(
     {
-        user_id: {
+        user_sensor_id: {
             type: Schema.Types.ObjectId,
-            ref: "User",
+            ref: "UserSensor",
             required: true
         },
         max_temperature: {

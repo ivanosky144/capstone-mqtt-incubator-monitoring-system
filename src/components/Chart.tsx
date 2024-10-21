@@ -107,10 +107,6 @@ const SensorChart: React.FC = () => {
         payload.humidity = data[i]?.humidity;
       }
 
-      console.log(data[i]?.temperature)
-      console.log(payload.temperature)
-      console.log(payload)
-
       const response = await fetch('/api/sensor', {
         method: 'POST',
         headers: {
@@ -118,10 +114,7 @@ const SensorChart: React.FC = () => {
         },
         body: JSON.stringify(payload)
       });
-
-      console.log(response);
     }
-
   };
 
   const temperatureOptions: ApexOptions = {
