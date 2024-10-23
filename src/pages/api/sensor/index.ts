@@ -55,31 +55,33 @@ async function getSensorDataHistories(req: NextApiRequest, res: NextApiResponse)
     try {
         const { user_id } = req.query;
 
-        let data: any = {};
+        let data: any = [];
         for (let i = 1; i <= 4; i++) {
             const userSensor = await UserSensor.find({ user_id: user_id, sensor_id: i});
             const sensorReading = await SensorReading.find({ user_sensor_id: userSensor[0]._id });
-            const averageHumidity = sensorReading.reduce((sum, entry) => sum+entry, 0)/sensorReading.length;
-            const averageTemperature = sensorReading.reduce((sum, entry) => sum+entry, 0)/sensorReading.length;
+            const averageHumidity = sensorReading.reduce((sum, entry) => sum+entry.humidity, 0)/sensorReading.length;
+            const averageTemperature = sensorReading.reduce((sum, entry) => sum+entry.temperature, 0)/sensorReading.length;
 
             const minHumidity = Math.min(...sensorReading.map(entry => entry.humidity));
             const maxHumidity = Math.max(...sensorReading.map(entry => entry.humidity));
             const minTemperature = Math.min(...sensorReading.map(entry => entry.temperature));
             const maxTemperature = Math.max(...sensorReading.map(entry => entry.temperature));
 
-            let sensorStats = {
-                avg_humidity: averageHumidity,
-                avg_temperature: averageTemperature,
-                min_humidity: minHumidity,
-                max_humidity: maxHumidity,
+            let stats = {
+                avg_hum: averageHumidity.toFixed(2),
+                avg_temp: averageTemperature.toFixed(2),
+                min_hum: minHumidity,
+                max_hum: maxHumidity,
                 min_temp: minTemperature,
                 max_temp: maxTemperature
             };
 
-            data[`sensor${i}`] = {
-                sensorData: sensorReading,
-                sensorStats
+            const sensorData = {
+                data: sensorReading,
+                stats
             };
+
+            data.push(sensorData)
         }
 
         return res.status(201).json({ data, message: "Sensor data histories retrieved successfully" });

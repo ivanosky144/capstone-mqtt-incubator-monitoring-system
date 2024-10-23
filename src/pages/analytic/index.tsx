@@ -9,7 +9,7 @@ export default function Analytic() {
             <Head />
             <div className="flex justify-between bg-ultralight_purple">
                 <Panel />
-                <div className="p-2">
+                <div className="p-2 w-[80%]">
                     <Stats />
                 </div>
             </div>

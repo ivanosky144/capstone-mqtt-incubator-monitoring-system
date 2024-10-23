@@ -107,7 +107,7 @@ const SensorChart: React.FC = () => {
         payload.humidity = data[i]?.humidity;
       }
 
-      const response = await fetch('/api/sensor', {
+      await fetch('/api/sensor', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json', 
