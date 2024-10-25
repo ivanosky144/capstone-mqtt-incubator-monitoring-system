@@ -1,9 +1,14 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
+import { Inter } from "next/font/google";
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
+const inter = Inter({
+    weight: ['500'],
+    subsets: ['latin'],
+  });
 interface SensorData {
     createdAt: Date;
     temperature: number;
@@ -55,8 +60,28 @@ export default function Stats() {
     });
 
     const chartOptions: ApexOptions = {
-        chart: { type: "line", height: 350 },
+        chart: { 
+            type: "line", 
+            height: 350,
+            toolbar: {
+                show: false
+            }, 
+            animations: {
+                enabled: true,
+            },
+            foreColor: 'purple'
+        },
+        title: {
+            align: 'left',
+            style: {
+              fontFamily: inter.style.fontFamily,
+              fontSize: '24px',
+              fontWeight: '800',
+              color: '#4E3A9D'
+            },
+        },
         xaxis: { type: "datetime" },
+        colors: ['purple', 'purple']
     };
 
     return (
@@ -83,27 +108,46 @@ export default function Stats() {
             </div>
             <div className="grid grid-cols-2 gap-10">
                 {sensorData?.map((s, index) => {
-                    console.log(s.data)
                     const { temperatureSeries, humiditySeries } = generateChartSeries(s.data);
 
                     return (
                         <div className="flex flex-col gap-1 p-3 rounded-lg bg-white">
                         <p className="font-semibold text-lg text-center">Sensor {index+1} Stats</p>
                         <div className="flex flex-col gap-3">
-                            <ReactApexChart 
-                                options={{ ...chartOptions, title: { text: "Temperature History" } }}
-                                series={temperatureSeries}
-                                height={350}
-                                type="line"
-                            />
-                            <ReactApexChart 
-                                options={{ ...chartOptions, title: { text: "Humidity History" } }}
-                                series={humiditySeries}
-                                height={350}
-                                type="line"
-                            />
+                            <div className="bg-gray-50 p-2 rounded-lg">
+                                <ReactApexChart 
+                                    options={{ ...chartOptions, title: { 
+                                        text: "Temperature History",       
+                                        style: {
+                                            fontFamily: inter.style.fontFamily,
+                                            fontSize: '12px',
+                                            fontWeight: '800',
+                                            color: '#4E3A9D'
+                                        }, 
+                                    }}}
+                                    series={temperatureSeries}
+                                    height={350}
+                                    type="line"
+                                />
+                            </div>
+                            <div className="bg-gray-50 p-2 rounded-lg">
+                                <ReactApexChart 
+                                    options={{ ...chartOptions, title: { 
+                                        text: "Humidity History",       
+                                        style: {
+                                            fontFamily: inter.style.fontFamily,
+                                            fontSize: '12px',
+                                            fontWeight: '800',
+                                            color: '#4E3A9D'
+                                        }, 
+                                    }}}                                
+                                    series={humiditySeries}
+                                    height={350}
+                                    type="line"
+                                />
+                            </div>
                         </div>
-                        <div className="flex flex-col gap-3">
+                        <div className="flex flex-col gap-3 p-2">
                             <div className="flex justify-between">
                                 <div className="flex flex-col gap-2 items-center m-2">
                                     <p className="text-sm">Min Temp</p>

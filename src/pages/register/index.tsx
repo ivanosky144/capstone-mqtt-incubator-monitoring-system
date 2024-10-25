@@ -4,6 +4,7 @@ import { FaUnlockKeyhole } from "react-icons/fa6";
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { BsPersonFill } from 'react-icons/bs';
+import useAuthStore from '@/store/auth_store';
 
 export default function Register() {
 
@@ -11,15 +12,18 @@ export default function Register() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const register = useAuthStore((state) => state.register);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     const payload = {
+      username,
       email,
       password
     }
+    await register(payload);
     router.push('/login');
   }
 

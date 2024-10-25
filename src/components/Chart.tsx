@@ -260,21 +260,43 @@ const SensorChart: React.FC = () => {
       ) : sensorData ? (
         <div className="flex flex-col gap-5">
           <div className="flex gap-4 justify-between">
-            <div className="flex flex-col gap-3 w-[15%]">
+            <div className="flex flex-col gap-3 w-[15%] bg-gray-50 rounded-lg p-2">
               <h2>Set Temperature Range</h2>
               <div className="flex flex-col">
                 <label>Min</label>
-                <select onChange={(e) => setTemperatureRange({ ...temperatureRange, min: Number(e.target.value)})} value={temperatureRange.min}>
+                <select
+                  onChange={(e) => setTemperatureRange({ ...temperatureRange, min: Number(e.target.value) })}
+                  value={temperatureRange.min}
+                  className="bg-purple-600 text-white rounded-lg p-1 appearance-none"
+                  style={{ backgroundColor: '#6B46C1', color: 'white' }}
+                >
                   {[...Array(50).keys()].map((n) => (
-                    <option key={n} value={n+1}>{n+1}</option>
+                    <option
+                      key={n}
+                      value={n + 1}
+                      style={{ backgroundColor: '#6B46C1', color: 'white' }} 
+                    >
+                      {n + 1}
+                    </option>
                   ))}
                 </select>
               </div>
               <div className="flex flex-col">
                 <label>Max</label>
-                <select onChange={(e) => setTemperatureRange({ ...temperatureRange, max: Number(e.target.value)})} value={temperatureRange.max}>
+                <select
+                    onChange={(e) => setTemperatureRange({ ...temperatureRange, max: Number(e.target.value) })}
+                    value={temperatureRange.max}
+                    className="bg-purple-600 text-white rounded-lg p-1 appearance-none"
+                    style={{ backgroundColor: '#6B46C1', color: 'white' }}
+                >
                   {[...Array(50).keys()].map((n) => (
-                    <option key={n} value={n+1}>{n+1}</option>
+                    <option
+                      key={n}
+                      value={n + 1}
+                      style={{ backgroundColor: '#6B46C1', color: 'white' }} 
+                    >
+                      {n + 1}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -284,21 +306,43 @@ const SensorChart: React.FC = () => {
             </div>
           </div>
           <div className="flex gap-4 justify-between">
-            <div className="flex flex-col gap-3 w-[15%]">
+            <div className="flex flex-col gap-3 w-[15%] bg-gray-50 rounded-lg p-2">
               <h2>Set Humidity Range</h2>
               <div className="flex flex-col">
                 <label>Min</label>
-                <select onChange={(e) => setHumidityRange({ ...humidityRange, min: Number(e.target.value)})} value={humidityRange.min}>
-                  {[...Array(100).keys()].map((n) => (
-                    <option key={n} value={n+1}>{n+1}</option>
-                  ))}
-                </select>
+                  <select
+                    onChange={(e) => setHumidityRange({ ...humidityRange, min: Number(e.target.value) })}
+                    value={humidityRange.min}
+                    className="bg-purple-600 text-white rounded-lg p-1 appearance-none"
+                    style={{ backgroundColor: '#6B46C1', color: 'white' }}
+                  >
+                    {[...Array(50).keys()].map((n) => (
+                      <option
+                        key={n}
+                        value={n + 1}
+                        style={{ backgroundColor: '#6B46C1', color: 'white' }} 
+                      >
+                        {n + 1}
+                      </option>
+                    ))}
+                  </select>
               </div>
               <div className="flex flex-col">
                 <label>Max</label>
-                <select onChange={(e) => setHumidityRange({ ...humidityRange, max: Number(e.target.value)})} value={humidityRange.max}>
-                  {[...Array(100).keys()].map((n) => (
-                    <option key={n} value={n+1}>{n+1}</option>
+                <select
+                    onChange={(e) => setHumidityRange({ ...humidityRange, max: Number(e.target.value) })}
+                    value={humidityRange.max}
+                    className="bg-purple-600 text-white rounded-lg p-1 appearance-none"
+                    style={{ backgroundColor: '#6B46C1', color: 'white' }}
+                >
+                  {[...Array(50).keys()].map((n) => (
+                    <option
+                      key={n}
+                      value={n + 1}
+                      style={{ backgroundColor: '#6B46C1', color: 'white' }} 
+                    >
+                      {n + 1}
+                    </option>
                   ))}
                 </select>
               </div>
