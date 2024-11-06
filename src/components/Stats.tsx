@@ -154,29 +154,29 @@ export default function Stats() {
                             <div className="flex justify-between">
                                 <div className="flex flex-col gap-2 items-center m-2">
                                     <p className="text-sm">Min Temp</p>
-                                    <p>{I2CSensorData.stats.min_temp}°C</p>
+                                    <p>{I2CSensorData?.stats.min_temp}°C</p>
                                 </div>
                                 <div className="flex flex-col gap-2 items-center m-2">
                                     <p className="text-sm">Max Temp</p>
-                                    <p>{I2CSensorData.stats.max_temp}°C</p>
+                                    <p>{I2CSensorData?.stats.max_temp}°C</p>
                                 </div>
                                 <div className="flex flex-col gap-2 items-center m-2">
                                     <p className="text-sm">Average Temp</p>
-                                    <p>{I2CSensorData.stats.avg_temp}°C</p>
+                                    <p>{I2CSensorData?.stats.avg_temp}°C</p>
                                 </div>
                             </div>
                             <div className="flex justify-between">
                                 <div className="flex flex-col gap-2 items-center m-2">
                                     <p className="text-sm">Min Hum</p>
-                                    <p>{I2CSensorData.stats.min_hum}%</p>
+                                    <p>{I2CSensorData?.stats.min_hum}%</p>
                                 </div>
                                 <div className="flex flex-col gap-2 items-center m-2">
                                     <p className="text-sm">Max Hum</p>
-                                    <p>{I2CSensorData.stats.max_hum}%</p>
+                                    <p>{I2CSensorData?.stats.max_hum}%</p>
                                 </div>
                                 <div className="flex flex-col gap-2 items-center m-2">
                                     <p className="text-sm">Average Hum</p>
-                                    <p>{I2CSensorData.stats.avg_hum}%</p>
+                                    <p>{I2CSensorData?.stats.avg_hum}%</p>
                                 </div>
                             </div>
                         </div>
@@ -227,29 +227,29 @@ export default function Stats() {
                                 <div className="flex justify-between">
                                     <div className="flex flex-col gap-2 items-center m-2">
                                         <p className="text-sm">Min Temp</p>
-                                        <p>{s.stats.min_temp}°C</p>
+                                        <p>{s?.stats.min_temp}°C</p>
                                     </div>
                                     <div className="flex flex-col gap-2 items-center m-2">
                                         <p className="text-sm">Max Temp</p>
-                                        <p>{s.stats.max_temp}°C</p>
+                                        <p>{s?.stats.max_temp}°C</p>
                                     </div>
                                     <div className="flex flex-col gap-2 items-center m-2">
                                         <p className="text-sm">Average Temp</p>
-                                        <p>{s.stats.avg_temp}°C</p>
+                                        <p>{s?.stats.avg_temp}°C</p>
                                     </div>
                                 </div>
                                 <div className="flex justify-between">
                                     <div className="flex flex-col gap-2 items-center m-2">
                                         <p className="text-sm">Min Hum</p>
-                                        <p>{s.stats.min_hum}%</p>
+                                        <p>{s?.stats.min_hum}%</p>
                                     </div>
                                     <div className="flex flex-col gap-2 items-center m-2">
                                         <p className="text-sm">Max Hum</p>
-                                        <p>{s.stats.max_hum}%</p>
+                                        <p>{s?.stats.max_hum}%</p>
                                     </div>
                                     <div className="flex flex-col gap-2 items-center m-2">
                                         <p className="text-sm">Average Hum</p>
-                                        <p>{s.stats.avg_hum}%</p>
+                                        <p>{s?.stats.avg_hum}%</p>
                                     </div>
                                 </div>
                             </div>
