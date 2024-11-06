@@ -118,7 +118,7 @@ const SensorChart: React.FC = () => {
     return () => {
       clientRef.current?.end();
     };
-  }, []);
+  }, [userInfo?.id]);
 
   const updateChartSeries = (analogData: SensorData[], i2cData: SensorData) => {
     const timestamp = new Date().getTime();
