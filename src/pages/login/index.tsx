@@ -99,7 +99,7 @@ export default function Login() {
           </button>
           <div className="flex justify-between">
             <span className='text-dark_purple font-semibold cursor-pointer'>Forgot your password ?</span>
-            <span className='text-dark_purple font-semibold cursor-pointer' onClick={() => router.push('/register')}>Don't have an account ?</span>
+            <span className='text-dark_purple font-semibold cursor-pointer' onClick={() => router.push('/register')}>Don&apos;t have an account?</span>
           </div>
         </form>
       </div>

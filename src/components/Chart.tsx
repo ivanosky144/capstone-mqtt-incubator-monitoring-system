@@ -52,6 +52,42 @@ const SensorChart: React.FC = () => {
   const clientRef = useRef<MqttClient | null>(null);
 
   useEffect(() => {
+
+    const saveSensorData = async (message: MQTTMessage) => {
+      const payload: any = {
+        user_id: String(userInfo?.id),
+      };
+      console.log(message)
+      const data = [
+        ...message.analog,
+        {
+          temperature: message.i2c.temperature,
+          humidity: message.i2c.humidity
+        }
+      ]
+      console.log(data)
+  
+      if (message) {
+        for (let i = 0; i <= 4; i++) {
+          payload.sensor_id = i+1;
+          
+          if (data[i]) {
+            payload.temperature = data[i]?.temperature;
+            payload.humidity = data[i]?.humidity;
+          }
+    
+          await fetch('/api/sensor', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json', 
+            },
+            body: JSON.stringify(payload)
+          });
+        }
+  
+      }
+    };
+    
     clientRef.current = mqtt.connect(mqttBrokerUrl);
 
     clientRef.current.on('connect', () => {
@@ -147,40 +183,6 @@ const SensorChart: React.FC = () => {
   };
   
 
-  const saveSensorData = async (message: MQTTMessage) => {
-    const payload: any = {
-      user_id: String(userInfo?.id),
-    };
-    console.log(message)
-    const data = [
-      ...message.analog,
-      {
-        temperature: message.i2c.temperature,
-        humidity: message.i2c.humidity
-      }
-    ]
-    console.log(data)
-
-    if (message) {
-      for (let i = 0; i <= 4; i++) {
-        payload.sensor_id = i+1;
-        
-        if (data[i]) {
-          payload.temperature = data[i]?.temperature;
-          payload.humidity = data[i]?.humidity;
-        }
-  
-        await fetch('/api/sensor', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json', 
-          },
-          body: JSON.stringify(payload)
-        });
-      }
-
-    }
-  };
 
   const temperatureOptions: ApexOptions = {
     chart: {

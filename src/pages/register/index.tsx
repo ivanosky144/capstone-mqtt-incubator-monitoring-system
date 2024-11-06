@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { BsPersonFill } from 'react-icons/bs';
 import useAuthStore from '@/store/auth_store';
 import { ToastContainer, toast } from 'react-toastify';
+import Image from 'next/image';
 
 export default function Register() {
 
@@ -59,12 +60,12 @@ export default function Register() {
   return (
     <div className="min-h-screen flex justify-center items-center">
       <div className="bg-purple shadow-xl rounded-lg h-[75vh] w-[25vw]">
-        <img src="/assets/baby-incubator.png" alt="" />
+        <Image src="/assets/baby-incubator.png" alt="" />
       </div>
       <div className="bg-white pt-2 px-8 pb-8  rounded-lg shadow-xl flex flex-col items-center h-[75vh] w-[25vw] justify-center">
         <div className="flex flex-col gap-1 mb-10 items-center">
             <h1 className="font-bold text-black text-3xl text-dark_purple">Create your first account on</h1>
-            <img src="assets/inkubi-logo.jpeg" alt=""  className='w-32 h-48'/>
+            <Image src="assets/inkubi-logo.jpeg" alt=""  className='w-32 h-48'/>
         </div>        
         <form className="space-y-4 w-full flex flex-col gap-5" onSubmit={handleSubmit}>
           <div className='flex flex-col gap-4'>

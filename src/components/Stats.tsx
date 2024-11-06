@@ -53,7 +53,7 @@ export default function Stats() {
         };
 
         getDataHistories();
-    }, []);
+    }, [userInfo?.id]);
 
 
     const generateChartSeries = (data: SensorData[]) => ({
