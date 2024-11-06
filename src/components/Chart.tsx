@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { ApexOptions } from 'apexcharts';
 import mqtt, { MqttClient } from 'mqtt';
@@ -49,41 +49,38 @@ const SensorChart: React.FC = () => {
 
   const mqttBrokerUrl = 'wss://test.mosquitto.org:8081';
   const topic = 'sensor/dht';
-  let client: MqttClient | null = null;
+  const clientRef = useRef<MqttClient | null>(null);
 
   useEffect(() => {
-    client = mqtt.connect(mqttBrokerUrl);
+    clientRef.current = mqtt.connect(mqttBrokerUrl);
 
-    client.on('connect', () => {
+    clientRef.current.on('connect', () => {
       console.log('[MQTT] Connected to broker');
       setLoading(false);
-      client?.subscribe(topic, { qos: 1 }, (err) => {
+      clientRef.current?.subscribe(topic, { qos: 1 }, (err) => {
         if (err) console.error('[MQTT] Subscription error:', err);
         else console.log(`[MQTT] Subscribed to topic: ${topic}`);
       });
     });
 
-    client.on('error', (err) => console.error('[MQTT] Error:', err));
-    client.on('offline', () => console.warn('[MQTT] Client offline'));
-    client.on('reconnect', () => console.log('[MQTT] Reconnecting...'));
+    clientRef.current.on('error', (err) => console.error('[MQTT] Error:', err));
+    clientRef.current.on('offline', () => console.warn('[MQTT] Client offline'));
+    clientRef.current.on('reconnect', () => console.log('[MQTT] Reconnecting...'));
 
-    client.on('message', (receivedTopic, message) => {
+    clientRef.current.on('message', (receivedTopic, message) => {
       console.log(`[MQTT] Message received on ${receivedTopic}:`, message.toString());
-    
       try {
         const parsedData: MQTTMessage = JSON.parse(message.toString());
         setAnalogSensorsData(parsedData.analog);
         updateChartSeries(parsedData.analog, parsedData.i2c);
-
         saveSensorData(parsedData);
       } catch (err) {
         console.error('[MQTT] Message parse error:', err);
       }
     });
-    
 
     return () => {
-      client?.end();
+      clientRef.current?.end();
     };
   }, []);
 

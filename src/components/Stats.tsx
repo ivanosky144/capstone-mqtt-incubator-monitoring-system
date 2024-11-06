@@ -29,27 +29,29 @@ export default function Stats() {
         setTimeRange((prev) => ( {...prev, [name]: value } ));
     };
 
-    const getDataHistories = async () => {
-        try {
-            const response = await fetch(`/api/sensor?user_id=${String(userInfo?.id)}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json', 
-                },
-            });
-            if (!response.ok) throw new Error("Failed to fetch data");
-
-            const res = await response.json();
-            setI2CSensorData(res?.data?.i2c);
-            setAnalogSensorsData(res?.data?.analog);
-            setIsSensorReceived(true);
-            
-        } catch(error) {
-            console
-        }
-    };
 
     useEffect(() => {
+
+        const getDataHistories = async () => {
+            try {
+                const response = await fetch(`/api/sensor?user_id=${String(userInfo?.id)}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json', 
+                    },
+                });
+                if (!response.ok) throw new Error("Failed to fetch data");
+    
+                const res = await response.json();
+                setI2CSensorData(res?.data?.i2c);
+                setAnalogSensorsData(res?.data?.analog);
+                setIsSensorReceived(true);
+                
+            } catch(error) {
+                console
+            }
+        };
+
         getDataHistories();
     }, []);
 
@@ -186,7 +188,7 @@ export default function Stats() {
                     const { temperatureSeries, humiditySeries } = generateChartSeries(s.data);
 
                     return (
-                        <div className="flex flex-col gap-1 p-3 rounded-lg bg-white">
+                        <div className="flex flex-col gap-1 p-3 rounded-lg bg-white" key={index}>
                             <p className="font-semibold text-lg text-center">Sensor {index+1} Stats</p>
                             <div className="flex flex-col gap-3">
                                 <div className="bg-gray-50 p-2 rounded-lg">
