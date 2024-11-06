@@ -1,7 +1,8 @@
 import { comparePassword, generateToken } from "@/libs/auth";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "@/utils/db_connection";
-import User from "@/models/User";
+
+import User from "@/models/user";
 
 export default async function loginHandler(req: NextApiRequest, res: NextApiResponse) {
     await connectToDatabase();
@@ -23,7 +24,7 @@ export default async function loginHandler(req: NextApiRequest, res: NextApiResp
             return res.status(400).json({ message: 'Invalid password' });
         }
 
-        const token = generateToken(existingUser);
+        const token = generateToken(existingUser.toObject());
 
         return res.status(200).json({ token: token, message: "Login successful"});
 

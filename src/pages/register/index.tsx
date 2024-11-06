@@ -1,10 +1,11 @@
 import 'tailwindcss/tailwind.css';
 import { AiOutlineMail } from "react-icons/ai";
 import { FaUnlockKeyhole } from "react-icons/fa6";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { BsPersonFill } from 'react-icons/bs';
 import useAuthStore from '@/store/auth_store';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function Register() {
 
@@ -13,7 +14,14 @@ export default function Register() {
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const register = useAuthStore((state) => state.register);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const router = useRouter();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+        router.push("/dashboard");
+    }
+}, [isLoggedIn, router]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,8 +31,29 @@ export default function Register() {
       email,
       password
     }
-    await register(payload);
-    router.push('/login');
+    try {
+      await register(payload);
+      toast('You are successfully logged in', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      router.push('/login');
+    } catch(err) {
+      toast.warning(`${err}`, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   }
 
   return (
@@ -32,8 +61,11 @@ export default function Register() {
       <div className="bg-purple shadow-xl rounded-lg h-[75vh] w-[25vw]">
         <img src="/assets/baby-incubator.png" alt="" />
       </div>
-      <div className="bg-white p-8 rounded-lg shadow-xl flex flex-col items-center h-[75vh] w-[25vw] justify-center">
-        <h1 className="font-bold mb-10 text-slate-500 text-4xl text-dark_purple">Create your first account</h1>
+      <div className="bg-white pt-2 px-8 pb-8  rounded-lg shadow-xl flex flex-col items-center h-[75vh] w-[25vw] justify-center">
+        <div className="flex flex-col gap-1 mb-10 items-center">
+            <h1 className="font-bold text-black text-3xl text-dark_purple">Create your first account on</h1>
+            <img src="assets/inkubi-logo.jpeg" alt=""  className='w-32 h-48'/>
+        </div>        
         <form className="space-y-4 w-full flex flex-col gap-5" onSubmit={handleSubmit}>
           <div className='flex flex-col gap-4'>
             <div className="flex items-center gap-2 p-3 bg-white_purple text-xl rounded-md">

@@ -17,6 +17,31 @@ interface AuthState {
   register: (payload: any) => Promise<void>;
 }
 
+const isTokenValid = (token: string): boolean => {
+  try {
+    const decodedToken: any = jwtDecode(token);
+    return decodedToken.exp * 1000 > Date.now();
+  } catch {
+    return false;
+  }
+}
+
+interface User {
+  email: string;
+  token: string;
+  id: number | undefined;
+}
+
+interface AuthState {
+  user: User | null;
+  loading: boolean;
+  error: string | null;
+  isLoggedIn: boolean;
+  login: (payload: any) => Promise<void>;
+  logout: () => void;
+  register: (payload: any) => Promise<void>;
+}
+
 const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   loading: false,
@@ -44,7 +69,7 @@ const useAuthStore = create<AuthState>((set, get) => ({
       const decodedToken: any = jwtDecode(token);
 
       set({ 
-        user: { email: payload.email, token, id: decodedToken.exp }, 
+        user: { email: payload.email, token, id: decodedToken._id }, 
         loading: false, 
         isLoggedIn: true 
       });
@@ -85,3 +110,5 @@ const useAuthStore = create<AuthState>((set, get) => ({
 }));
 
 export default useAuthStore;
+
+

@@ -1,9 +1,9 @@
 import { connectToDatabase } from "@/utils/db_connection";
 import type { NextApiRequest, NextApiResponse } from "next";
 import authMiddleware from "@/middleware/auth_middleware";
-import UserSensor from "@/models/UserSensor";
-import SensorReading from "@/models/SensorReading";
-import Stats from "@/models/Stats";
+import UserSensor from "@/models/user_sensor";
+import SensorReading from "@/models/sensor_reading";
+import Stats from "@/models/stats";
 import mongoose from "mongoose";
 
 async function handleSensorRequest(req: NextApiRequest, res: NextApiResponse) {
@@ -55,8 +55,10 @@ async function getSensorDataHistories(req: NextApiRequest, res: NextApiResponse)
     try {
         const { user_id } = req.query;
 
-        let data: any = [];
-        for (let i = 1; i <= 4; i++) {
+        let data = {};
+        let analog: any = [];
+        let i2c = {};
+        for (let i = 1; i <= 5; i++) {
             const userSensor = await UserSensor.find({ user_id: user_id, sensor_id: i});
             const sensorReading = await SensorReading.find({ user_sensor_id: userSensor[0]._id });
             const averageHumidity = sensorReading.reduce((sum, entry) => sum+entry.humidity, 0)/sensorReading.length;
@@ -80,8 +82,17 @@ async function getSensorDataHistories(req: NextApiRequest, res: NextApiResponse)
                 data: sensorReading,
                 stats
             };
+            
+            if (i<5) {
+                analog.push(sensorData)
+            } else if (i == 5) {
+                i2c = sensorData
+            }
+        }
 
-            data.push(sensorData)
+        data = {
+            analog,
+            i2c
         }
 
         return res.status(201).json({ data, message: "Sensor data histories retrieved successfully" });

@@ -1,8 +1,8 @@
 import { connectToDatabase } from "@/utils/db_connection";
 import type { NextApiRequest, NextApiResponse } from "next";
 import authMiddleware from "@/middleware/auth_middleware";
-import User from "@/models/User";
-import UserSensor from "@/models/UserSensor";
+import User from "@/models/user";
+import UserSensor from "@/models/user_sensor";
 
 
 interface UserDetailResponse {

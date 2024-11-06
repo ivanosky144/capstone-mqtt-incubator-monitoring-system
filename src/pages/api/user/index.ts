@@ -1,8 +1,8 @@
 import { connectToDatabase } from "@/utils/db_connection";
-import user from "@/models/User";
+import user from "@/models/user";
 import type { NextApiRequest, NextApiResponse } from "next";
 import authMiddleware from "@/middleware/auth_middleware";
-import User from "@/models/User";
+import User from "@/models/user";
 
 async function handleUserRequests(req: NextApiRequest, res: NextApiResponse) {
     await connectToDatabase();
