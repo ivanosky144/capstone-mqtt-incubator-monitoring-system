@@ -21,7 +21,6 @@ export default function Stats() {
     const [timeRange, setTimeRange] = useState({ start: "", end: "" });
     const [analogSensorsData, setAnalogSensorsData] = useState<any[]>([]);
     const [I2CSensorData, setI2CSensorData] = useState<any>();
-    const [isSensorReceived, setIsSensorReceived] = useState<boolean>(false);
     const userInfo = useAuthStore(state => state.user);
 
     const handleTimeChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +44,7 @@ export default function Stats() {
                 const res = await response.json();
                 setI2CSensorData(res?.data?.i2c);
                 setAnalogSensorsData(res?.data?.analog);
-                setIsSensorReceived(true);
+
                 
             } catch(error) {
                 console
@@ -90,7 +89,7 @@ export default function Stats() {
         colors: ['purple', 'purple']
     };
 
-    const { temperatureSeries: i2cTemperatureSeries, humiditySeries: i2cHumiditySeries } = generateChartSeries(I2CSensorData.data);
+    const { temperatureSeries: i2cTemperatureSeries, humiditySeries: i2cHumiditySeries } = I2CSensorData?.data ? generateChartSeries(I2CSensorData.data) : { temperatureSeries: [], humiditySeries: [] };
 
 
     return (
@@ -185,7 +184,7 @@ export default function Stats() {
 
             <div className="grid grid-cols-2 gap-10">
                 {analogSensorsData?.map((s, index) => {
-                    const { temperatureSeries, humiditySeries } = generateChartSeries(s.data);
+                    const { temperatureSeries, humiditySeries } = s.data ? generateChartSeries(s.data) : { temperatureSeries: [], humiditySeries: [] };
 
                     return (
                         <div className="flex flex-col gap-1 p-3 rounded-lg bg-white" key={index}>
