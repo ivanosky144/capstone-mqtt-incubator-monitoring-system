@@ -3,8 +3,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import authMiddleware from "@/middleware/auth_middleware";
 import UserSensor from "@/models/user_sensor";
 import SensorReading from "@/models/sensor_reading";
-import Stats from "@/models/stats";
-import mongoose from "mongoose";
 
 async function handleSensorRequest(req: NextApiRequest, res: NextApiResponse) {
     await connectToDatabase();
