@@ -34,7 +34,7 @@ export default function Login() {
     }
     try {
       await login(payload);
-      toast('You are successfully logged in', {
+      toast('Kamu berhasil login', {
         position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
@@ -61,12 +61,12 @@ export default function Login() {
     <div className="min-h-screen flex justify-center items-center">
       <ToastContainer />
       <div className="bg-purple shadow-xl rounded-lg h-[75vh] w-[25vw]">
-        <Image src="/assets/baby-incubator.png" alt="" />
+        <img src="/assets/baby-incubator.png" alt="" />
       </div>
       <div className="bg-white pt-2 px-8 pb-8 rounded-lg shadow-xl flex flex-col items-center h-[75vh] w-[25vw] justify-center">
         <div className="flex flex-col gap-1 mb-10 items-center">
-          <h1 className="font-bold text-black text-3xl text-dark_purple">Welcome back to</h1>
-          <Image src="assets/inkubi-logo.jpeg" alt=""  className='w-32 h-48'/>
+          <h1 className="font-bold text-black text-3xl text-dark_purple">Selamat datang di</h1>
+          <img src="assets/inkubi-logo.jpeg" alt=""  className='w-32 h-48'/>
         </div>
         <form className="space-y-4 w-full flex flex-col gap-5" onSubmit={handleSubmit}>
           <div className='flex flex-col gap-4'>
@@ -98,8 +98,8 @@ export default function Login() {
             LOGIN
           </button>
           <div className="flex justify-between">
-            <span className='text-dark_purple font-semibold cursor-pointer'>Forgot your password ?</span>
-            <span className='text-dark_purple font-semibold cursor-pointer' onClick={() => router.push('/register')}>Don&apos;t have an account?</span>
+            <span className='text-dark_purple font-semibold cursor-pointer'>Lupa kata sandi?</span>
+            <span className='text-dark_purple font-semibold cursor-pointer' onClick={() => router.push('/register')}>Belum punya akun?</span>
           </div>
         </form>
       </div>

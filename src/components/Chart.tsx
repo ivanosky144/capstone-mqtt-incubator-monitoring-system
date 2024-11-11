@@ -23,6 +23,7 @@ interface SensorData {
 interface MQTTMessage {
   analog: SensorData[]
   i2c: SensorData
+  sound_level: any
 }
 
 const SensorChart: React.FC = () => {
@@ -45,6 +46,7 @@ const SensorChart: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [temperatureRange, setTemperatureRange] = useState({ min: 0, max: 50 });
   const [humidityRange, setHumidityRange] = useState({ min: 0, max: 100 });
+  const [i2cSensorData, setI2CSensorData] = useState<SensorData>();
   const userInfo = useAuthStore(state => state.user);
 
   const mqttBrokerUrl = 'wss://test.mosquitto.org:8081';
@@ -65,7 +67,6 @@ const SensorChart: React.FC = () => {
           humidity: message.i2c.humidity
         }
       ]
-      console.log(data)
   
       if (message) {
         for (let i = 0; i <= 4; i++) {
@@ -108,7 +109,8 @@ const SensorChart: React.FC = () => {
       try {
         const parsedData: MQTTMessage = JSON.parse(message.toString());
         setAnalogSensorsData(parsedData.analog);
-        updateChartSeries(parsedData.analog, parsedData.i2c);
+        setI2CSensorData(parsedData.i2c);
+        updateChartSeries(parsedData.analog, parsedData.i2c, parsedData.sound_level);
         saveSensorData(parsedData);
       } catch (err) {
         console.error('[MQTT] Message parse error:', err);
@@ -120,11 +122,23 @@ const SensorChart: React.FC = () => {
     };
   }, [userInfo?.id]);
 
-  const updateChartSeries = (analogData: SensorData[], i2cData: SensorData) => {
+  const updateChartSeries = (analogData: SensorData[], i2cData: SensorData, soundLevel: any) => {
     const timestamp = new Date().getTime();
+
+    if (soundLevel > 70) {
+      toast.warning('Peringatan: Suara terukur di atas 70 dB! Mohon periksa segera.', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
     
     if (i2cData && i2cData.temperature > 38) {
-      toast.warning('I2C Sensor temperature exceeded 38°C!', {
+      toast.warning('Peringatan: Suhu di atas 38°C! Mohon periksa segera.', {
         position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
@@ -137,7 +151,7 @@ const SensorChart: React.FC = () => {
 
     analogData.forEach((sensorData, index) => {
       if (sensorData.temperature > 38) {
-        toast.warning(`Sensor ${index + 1} temperature exceeded 38°C!`, {
+        toast.warning(`Peringatan: Suhu di atas 38°C! Mohon periksa segera.`, {
           position: 'top-right',
           autoClose: 5000,
           hideProgressBar: false,
@@ -320,6 +334,19 @@ const SensorChart: React.FC = () => {
 
   return (
     <div className="p-5 w-[90%] flex-4 bg-ultralight_purple">
+      <div className="bg-white rounded-md p-3 mb-10 w-[30%] font-semibold">
+        <p className='text-center font-semibold text-3xl text-dark_purple'>Sensor I2C</p>
+        <div className="flex justify-between">
+          <div className="flex flex-col items-center text-xl">
+            <p>Humidity</p>
+            <p className='text-2xl'>{i2cSensorData? i2cSensorData?.humidity : 0} %</p>
+          </div>
+          <div className="flex flex-col items-center text-xl">
+            <p>Temperature</p>
+            <p className='text-2xl'>{i2cSensorData? i2cSensorData?.temperature : 0} °C</p>
+          </div>
+        </div>
+      </div>
       <ToastContainer />
       {loading ? (
         <div className="flex justify-center items-center h-screen">
@@ -421,7 +448,7 @@ const SensorChart: React.FC = () => {
           </div>
         </div>
       ) : (
-        <p>Waiting for sensor data...</p>
+        <p>Menunggu data dari sensor...</p>
       )}
     </div>
   );

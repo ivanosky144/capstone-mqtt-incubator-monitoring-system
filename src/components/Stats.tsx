@@ -95,7 +95,7 @@ export default function Stats() {
     return (
         <div className="flex flex-col gap-3 p-1">
             <div className="p-2 rounded-md bg-white w-[40%]">
-                <h2 className="font-semibold text-lg">Set the time range</h2>
+                <h2 className="font-semibold text-lg">Atur range waktu</h2>
                 <div className="flex justify-between">
                     <input 
                         type="datetime-local" 
@@ -115,7 +115,7 @@ export default function Stats() {
                 </div>
             </div>
                     <div className="flex flex-col gap-1 p-3 rounded-lg bg-white">
-                        <p className="font-semibold text-lg text-center">I2C Sensor Stats</p>
+                        <p className="font-semibold text-lg text-center">Stats Sensor I2C</p>
                         <div className="flex flex-col gap-3">
                             <div className="bg-gray-50 p-2 rounded-lg">
                                 <ReactApexChart 
@@ -188,7 +188,7 @@ export default function Stats() {
 
                     return (
                         <div className="flex flex-col gap-1 p-3 rounded-lg bg-white" key={index}>
-                            <p className="font-semibold text-lg text-center">Sensor {index+1} Stats</p>
+                            <p className="font-semibold text-lg text-center">Stats Sensor {index+1}</p>
                             <div className="flex flex-col gap-3">
                                 <div className="bg-gray-50 p-2 rounded-lg">
                                     <ReactApexChart 
