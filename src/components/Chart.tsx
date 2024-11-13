@@ -43,162 +43,12 @@ const SensorChart: React.FC = () => {
     { name: 'Sensor I2C', data: [] as { x: number; y: number }[] },
   ]);
 
-  const [loading, setLoading] = useState(true);
   const [temperatureRange, setTemperatureRange] = useState({ min: 0, max: 50 });
   const [humidityRange, setHumidityRange] = useState({ min: 0, max: 100 });
   const [i2cSensorData, setI2CSensorData] = useState<SensorData>();
   const userInfo = useAuthStore(state => state.user);
 
-  const mqttBrokerUrl = 'wss://test.mosquitto.org:8081';
-  const topic = 'sensor/dht';
-  const clientRef = useRef<MqttClient | null>(null);
-
-  useEffect(() => {
-
-    const saveSensorData = async (message: MQTTMessage) => {
-      const payload: any = {
-        user_id: String(userInfo?.id),
-      };
-      console.log(message)
-      const data = [
-        ...message.analog,
-        {
-          temperature: message.i2c.temperature,
-          humidity: message.i2c.humidity
-        }
-      ]
-  
-      if (message) {
-        for (let i = 0; i <= 4; i++) {
-          payload.sensor_id = i+1;
-          
-          if (data[i]) {
-            payload.temperature = data[i]?.temperature;
-            payload.humidity = data[i]?.humidity;
-          }
-    
-          await fetch('/api/sensor', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json', 
-            },
-            body: JSON.stringify(payload)
-          });
-        }
-  
-      }
-    };
-    
-    clientRef.current = mqtt.connect(mqttBrokerUrl);
-
-    clientRef.current.on('connect', () => {
-      console.log('[MQTT] Connected to broker');
-      setLoading(false);
-      clientRef.current?.subscribe(topic, { qos: 1 }, (err) => {
-        if (err) console.error('[MQTT] Subscription error:', err);
-        else console.log(`[MQTT] Subscribed to topic: ${topic}`);
-      });
-    });
-
-    clientRef.current.on('error', (err) => console.error('[MQTT] Error:', err));
-    clientRef.current.on('offline', () => console.warn('[MQTT] Client offline'));
-    clientRef.current.on('reconnect', () => console.log('[MQTT] Reconnecting...'));
-
-    clientRef.current.on('message', (receivedTopic, message) => {
-      console.log(`[MQTT] Message received on ${receivedTopic}:`, message.toString());
-      try {
-        const parsedData: MQTTMessage = JSON.parse(message.toString());
-        setAnalogSensorsData(parsedData.analog);
-        setI2CSensorData(parsedData.i2c);
-        updateChartSeries(parsedData.analog, parsedData.i2c, parsedData.sound_level);
-        saveSensorData(parsedData);
-      } catch (err) {
-        console.error('[MQTT] Message parse error:', err);
-      }
-    });
-
-    return () => {
-      clientRef.current?.end();
-    };
-  }, [userInfo?.id]);
-
-  const updateChartSeries = (analogData: SensorData[], i2cData: SensorData, soundLevel: any) => {
-    const timestamp = new Date().getTime();
-
-    if (soundLevel > 70) {
-      toast.warning('Peringatan: Suara terukur di atas 70 dB! Mohon periksa segera.', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    }
-    
-    if (i2cData && i2cData.temperature > 38) {
-      toast.warning('Peringatan: Suhu di atas 38°C! Mohon periksa segera.', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    }
-
-    analogData.forEach((sensorData, index) => {
-      if (sensorData.temperature > 38) {
-        toast.warning(`Peringatan: Suhu di atas 38°C! Mohon periksa segera.`, {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      }
-    });
-  
-    setTemperatureSeries((prevSeries) =>
-      prevSeries.map((sensor, index) => {
-        if (index < 4) {
-          return {
-            ...sensor,
-            data: [...sensor.data, { x: timestamp, y: analogData[index]?.temperature }].slice(-50),
-          };
-        } else {
-          return {
-            ...sensor,
-            data: [...sensor.data, { x: timestamp, y: i2cData?.temperature }].slice(-50),
-          };
-        }
-      })
-    );
-  
-    setHumiditySeries((prevSeries) =>
-      prevSeries.map((sensor, index) => {
-        if (index < 4) {
-          return {
-            ...sensor,
-            data: [...sensor.data, { x: timestamp, y: analogData[index]?.humidity }].slice(-50),
-          };
-        } else {
-          return {
-            ...sensor,
-            data: [...sensor.data, { x: timestamp, y: i2cData?.humidity }].slice(-50),
-          };
-        }
-      })
-    );
-  };
-  
-
-
-  const temperatureOptions: ApexOptions = {
+  const initialTemperatureOptions: ApexOptions = {
     chart: {
       id: 'temperature-realtime',
       height: 350,
@@ -265,7 +115,7 @@ const SensorChart: React.FC = () => {
     },
   };
 
-  const humidityOptions: ApexOptions = {
+  const initialHumidityOptions: ApexOptions = {
     chart: {
       id: 'humidity-realtime',
       height: 350,
@@ -332,6 +182,193 @@ const SensorChart: React.FC = () => {
     },
   };
 
+
+  const [temperatureOptions, setTemperatureOptions] = useState(initialTemperatureOptions);
+  const [humidityOptions, setHumidityOptions] = useState(initialHumidityOptions);
+
+  const mqttBrokerUrl = 'wss://test.mosquitto.org:8081';
+  const topic = 'sensor/dht';
+  const clientRef = useRef<MqttClient | null>(null);
+
+  useEffect(() => {
+
+    const saveSensorData = async (message: MQTTMessage) => {
+      const payload: any = {
+        user_id: String(userInfo?.id),
+      };
+      console.log(message)
+      const data = [
+        ...message.analog,
+        {
+          temperature: message.i2c.temperature,
+          humidity: message.i2c.humidity
+        }
+      ]
+  
+      if (message) {
+        for (let i = 0; i <= 4; i++) {
+          payload.sensor_id = i+1;
+          
+          if (data[i]) {
+            payload.temperature = data[i]?.temperature;
+            payload.humidity = data[i]?.humidity;
+          }
+    
+          await fetch('/api/sensor', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json', 
+            },
+            body: JSON.stringify(payload)
+          });
+        }
+  
+      }
+    };
+    
+    clientRef.current = mqtt.connect(mqttBrokerUrl);
+
+    clientRef.current.on('connect', () => {
+      console.log('[MQTT] Connected to broker');
+      clientRef.current?.subscribe(topic, { qos: 1 }, (err) => {
+        if (err) console.error('[MQTT] Subscription error:', err);
+        else console.log(`[MQTT] Subscribed to topic: ${topic}`);
+      });
+    });
+
+    clientRef.current.on('error', (err) => console.error('[MQTT] Error:', err));
+    clientRef.current.on('offline', () => console.warn('[MQTT] Client offline'));
+    clientRef.current.on('reconnect', () => console.log('[MQTT] Reconnecting...'));
+
+    clientRef.current.on('message', (receivedTopic, message) => {
+      console.log(`[MQTT] Message received on ${receivedTopic}:`, message.toString());
+      try {
+        const parsedData: MQTTMessage = JSON.parse(message.toString());
+        setAnalogSensorsData(parsedData.analog);
+        setI2CSensorData(parsedData.i2c);
+        updateChartSeries(parsedData);
+        saveSensorData(parsedData);
+      } catch (err) {
+        console.error('[MQTT] Message parse error:', err);
+      }
+    });
+
+    return () => {
+      clientRef.current?.end();
+    };
+  }, [userInfo?.id]);
+  
+
+  const updateChartSeries = (sensorData: MQTTMessage) => {
+    const timestamp = new Date().getTime();
+    const { sound_level: soundLevel, i2c: i2cData, analog: analogData } = sensorData;
+  
+    // Show warning toasts if conditions are met
+    if (soundLevel > 70) {
+      toast.warning('Bayi sedang menangis!!!', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  
+    if (i2cData && i2cData.temperature > 38) {
+      toast.warning('Peringatan: Suhu di atas 38°C! Mohon periksa segera.', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  
+    analogData.forEach((sensorData, index) => {
+      if (sensorData.temperature > 38) {
+        toast.warning(`Peringatan: Suhu di atas 38°C! Mohon periksa segera.`, {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    });
+  
+    // Update Temperature Series
+    setTemperatureSeries((prevSeries) => {
+      const isFirstData = prevSeries[0].data.length === 0;
+  
+      // Set initial x-axis range on first data point
+      if (isFirstData) {
+        console.log(timestamp)
+        setTemperatureOptions((prevOptions) => ({
+          ...prevOptions,
+          xaxis: {
+            ...prevOptions.xaxis,
+            min: timestamp,
+            max: timestamp + 60000, // 1 minute window, adjust as needed
+          },
+        }));
+      }
+  
+      return prevSeries.map((sensor, index) => {
+        if (index < 4) {
+          return {
+            ...sensor,
+            data: [...sensor.data, { x: timestamp, y: analogData[index]?.temperature }].slice(-50),
+          };
+        } else {
+          return {
+            ...sensor,
+            data: [...sensor.data, { x: timestamp, y: i2cData?.temperature }].slice(-50),
+          };
+        }
+      });
+    });
+  
+    // Update Humidity Series
+    setHumiditySeries((prevSeries) => {
+      const isFirstData = prevSeries[0].data.length === 0;
+  
+      // Set initial x-axis range on first data point
+      if (isFirstData) {
+        setHumidityOptions((prevOptions) => ({
+          ...prevOptions,
+          xaxis: {
+            ...prevOptions.xaxis,
+            min: timestamp,
+            max: timestamp + 60000, // 1 minute window, adjust as needed
+          },
+        }));
+      }
+  
+      return prevSeries.map((sensor, index) => {
+        if (index < 4) {
+          return {
+            ...sensor,
+            data: [...sensor.data, { x: timestamp, y: analogData[index]?.humidity }].slice(-50),
+          };
+        } else {
+          return {
+            ...sensor,
+            data: [...sensor.data, { x: timestamp, y: i2cData?.humidity }].slice(-50),
+          };
+        }
+      });
+    });
+  };
+  
+  
+
+
   return (
     <div className="p-5 w-[90%] flex-4 bg-ultralight_purple">
       <div className="bg-white rounded-md p-3 mb-10 w-[30%] font-semibold">
@@ -348,11 +385,7 @@ const SensorChart: React.FC = () => {
         </div>
       </div>
       <ToastContainer />
-      {loading ? (
-        <div className="flex justify-center items-center h-screen">
-          <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-purple-500"></div>
-        </div>
-      ) : analogSensorsData ? (
+      {analogSensorsData ? (
         <div className="flex flex-col gap-5">
           <div className="flex gap-4 justify-between">
             <div className="flex flex-col gap-3 w-[15%] bg-gray-50 rounded-lg p-2">
@@ -397,7 +430,7 @@ const SensorChart: React.FC = () => {
               </div>
             </div>
             <div className="bg-white p-2 rounded-lg w-[85%]">
-              <ReactApexChart options={temperatureOptions} series={temperatureSeries} type="line" height={350} />
+              <ReactApexChart options={initialTemperatureOptions} series={temperatureSeries} type="line" height={350} />
             </div>
           </div>
           <div className="flex gap-4 justify-between">
@@ -443,7 +476,7 @@ const SensorChart: React.FC = () => {
               </div>
             </div>
             <div className="bg-white p-2 rounded-lg w-[85%]">
-              <ReactApexChart options={humidityOptions} series={humiditySeries} type="line" height={350} />
+              <ReactApexChart options={initialHumidityOptions} series={humiditySeries} type="line" height={350} />
             </div>
           </div>
         </div>

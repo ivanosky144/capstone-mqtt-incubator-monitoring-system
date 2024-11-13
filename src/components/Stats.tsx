@@ -33,7 +33,7 @@ export default function Stats() {
 
         const getDataHistories = async () => {
             try {
-                const response = await fetch(`/api/sensor?user_id=${String(userInfo?.id)}`, {
+                const response = await fetch(`/api/sensor?user_id=${String("673204dd29690e9b4a7b9b90")}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json', 
@@ -86,7 +86,11 @@ export default function Stats() {
             },
         },
         xaxis: { type: "datetime" },
-        colors: ['purple', 'purple']
+        colors: ['purple', 'purple'],
+        yaxis: {
+            min: 0,
+            max: 100
+        }
     };
 
     const { temperatureSeries: i2cTemperatureSeries, humiditySeries: i2cHumiditySeries } = I2CSensorData?.data ? generateChartSeries(I2CSensorData.data) : { temperatureSeries: [], humiditySeries: [] };

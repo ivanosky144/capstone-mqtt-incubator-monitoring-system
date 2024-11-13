@@ -11,11 +11,11 @@ export default function Analytic() {
     const router = useRouter();
     const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
-    useEffect(() => {
-        if (!isLoggedIn) {
-            router.push("/login");
-        }
-    }, [isLoggedIn, router]);
+    // useEffect(() => {
+    //     if (!isLoggedIn) {
+    //         router.push("/login");
+    //     }
+    // }, [isLoggedIn, router]);
 
     
     return (
