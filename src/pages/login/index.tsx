@@ -63,29 +63,29 @@ export default function Login() {
       <div className="bg-purple shadow-xl rounded-lg h-[75vh] w-[25vw]">
         <img src="/assets/baby-incubator.png" alt="" />
       </div>
-      <div className="bg-white pt-2 px-8 pb-8 rounded-lg shadow-xl flex flex-col items-center h-[75vh] w-[25vw] justify-center">
-        <div className="flex flex-col gap-1 mb-10 items-center">
-          <h1 className="font-bold text-black text-3xl text-dark_purple">Selamat datang di</h1>
-          <img src="assets/inkubi-logo.jpeg" alt=""  className='w-32 h-48'/>
+      <div className="bg-white px-8 pb-10 pt-4 rounded-lg shadow-xl flex flex-col items-center h-[75vh] w-[25vw] justify-center">
+        <div className="flex flex-col gap-1 mb-5 items-center">
+          <h1 className="font-bold text-black text-2xl text-dark_purple">Selamat datang di</h1>
+          <img src="assets/inkubi-logo.jpeg" alt=""  className='w-24 h-32'/>
         </div>
-        <form className="space-y-4 w-full flex flex-col gap-5" onSubmit={handleSubmit}>
+        <form className="space-y-4 w-full flex flex-col gap-2" onSubmit={handleSubmit}>
           <div className='flex flex-col gap-4'>
             <div className="flex items-center gap-2 p-3 bg-white_purple text-xl rounded-md">
               <AiOutlineMail />
               <input
                 type="email"
                 id="email"
-                className="w-full rounded-md p-3 bg-white_purple font-semibold outline-none text-xl"
+                className="w-full rounded-md p-1 bg-white_purple font-semibold outline-none text-sm"
                 placeholder="Type your email"
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div className="flex items-center gap-2 p-3 bg-white_purple text-xl rounded-md">
+            <div className="flex items-center gap-2 p-3 bg-white_purple rounded-md">
               <FaUnlockKeyhole />
               <input
                 type="password"
                 id="password"
-                className="w-full rounded-md p-3 bg-white_purple font-semibold outline-none text-xl"
+                className="w-full rounded-md p-1 bg-white_purple font-semibold outline-none text-sm"
                 placeholder="Type your password"
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -93,13 +93,13 @@ export default function Login() {
           </div>
           <button
             type="submit"
-            className="w-full text-white rounded-2xl py-4 mt-10 bg-dark_purple font-bold hover:scale-105 flex justify-center"
+            className="w-full text-white rounded-2xl py-3 mt-10 bg-dark_purple font-bold hover:opacity-50 flex justify-center text-sm"
           >
             LOGIN
           </button>
           <div className="flex justify-between">
-            <span className='text-dark_purple font-semibold cursor-pointer'>Lupa kata sandi?</span>
-            <span className='text-dark_purple font-semibold cursor-pointer' onClick={() => router.push('/register')}>Belum punya akun?</span>
+            <span className='text-dark_purple font-semibold cursor-pointer text-xs'>Lupa kata sandi?</span>
+            <span className='text-dark_purple font-semibold cursor-pointer text-xs' onClick={() => router.push('/register')}>Belum punya akun?</span>
           </div>
         </form>
       </div>
