@@ -270,7 +270,7 @@ const SensorChart: React.FC = () => {
     const { sound_level: soundLevel, i2c: i2cData, analog: analogData } = sensorData;
 
     // Show warning toasts if conditions are met
-    if (soundLevel > 30) {
+    if (soundLevel > 27) {
       toast.warning('Bayi sedang menangis!!!', {
         position: 'top-right',
         autoClose: 5000,
