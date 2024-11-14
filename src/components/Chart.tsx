@@ -366,20 +366,20 @@ const SensorChart: React.FC = () => {
 
 
   return (
-    <div className="p-5 w-[90%] flex-4 bg-ultralight_purple">
-      <div className="flex gap-5 m-5 justify-center">
-        <div className="flex bg-white rounded-md py-5 px-8 w-[28%] justify-between">
-          <FaTemperatureHigh className='text-dark_purple text-8xl'/>
-          <div className="flex flex-col items-center">
+    <div className="md:p-5 w-[90%] flex-4 bg-ultralight_purple w-screen p-6 md:h-[100%] h-[85%] md:mt-20">
+      <div className="flex gap-5 justify-center w-[100%] my-5">
+        <div className="flex bg-white rounded-md py-5 px-6 md:w-[30%] justify-between w-[50%] items-center">
+          <FaTemperatureHigh className='text-dark_purple text-7xl md:text-6xl'/>
+          <div className="flex flex-col">
             <p className='text-purple font-semibold text-xl'>Temperature</p>
-            <p className='text-6xl font-semibold'>{analogSensorsData.length ? analogSensorsData[3]?.temperature : 0} °C</p>
+            <p className='md:text-5xl font-semibold text-4xl'>{analogSensorsData.length ? analogSensorsData[3]?.temperature : 0} °C</p>
           </div>
         </div>
-        <div className="flex bg-white rounded-md py-5 px-8 gap-5 w-[28%] justify-between">
+        <div className="flex bg-white rounded-md py-5 px-6 gap-5 md:w-[30%] justify-between w-[50%] items-center">
           <IoIosWater className='text-dark_purple text-8xl'/>
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col">
             <p className='text-purple font-semibold text-xl'>Humidity</p>
-            <p className='text-6xl font-semibold'>{analogSensorsData.length ? analogSensorsData[3]?.humidity : 0} %</p>
+            <p className='md:text-5xl font-semibold text-4xl text-center'>{analogSensorsData.length ? analogSensorsData[3]?.humidity : 10.24} %</p>
           </div>
         </div>
       </div>
@@ -387,64 +387,19 @@ const SensorChart: React.FC = () => {
       <ToastContainer />
       {analogSensorsData ? (
         <div className="flex flex-col gap-5">
-          <div className="flex gap-4 justify-between">
-            <div className="flex flex-col gap-3 w-[12%] bg-gray-50 rounded-lg p-2">
+          <div className="flex gap-4 justify-between flex-col md:flex-row">
+            <div className="flex flex-col gap-3 md:w-[12%] bg-gray-50 rounded-lg p-2 w-[100%]">
               <h2 className='text-sm'>Set Temperature Range</h2>
-              <div className="flex flex-col">
-                <label className='text-xs'>Min</label>
-                <select
-                  onChange={(e) => setTemperatureRange({ ...temperatureRange, min: Number(e.target.value) })}
-                  value={temperatureRange.min}
-                  className="bg-purple-600 text-white rounded-lg p-1 appearance-none w-[90%] text-xs"
-                  style={{ backgroundColor: '#6B46C1', color: 'white' }}
-                >
-                  {[...Array(50).keys()].map((n) => (
-                    <option
-                      key={n}
-                      value={n + 1}
-                      style={{ backgroundColor: '#6B46C1', color: 'white' }} 
-                    >
-                      {n + 1}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="flex flex-col">
-                <label className='text-sm'>Max</label>
-                <select
-                    onChange={(e) => setTemperatureRange({ ...temperatureRange, max: Number(e.target.value) })}
-                    value={temperatureRange.max}
-                    className="bg-purple-600 text-white rounded-lg p-1 appearance-none w-[90%] text-xs"
-                    style={{ backgroundColor: '#6B46C1', color: 'white' }}
-                >
-                  {[...Array(50).keys()].map((n) => (
-                    <option
-                      key={n}
-                      value={n + 1}
-                      style={{ backgroundColor: '#6B46C1', color: 'white' }} 
-                    >
-                      {n + 1}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div className="bg-white p-2 rounded-lg w-[85%]">
-              <ReactApexChart options={initialTemperatureOptions} series={temperatureSeries} type="line" height={360} />
-            </div>
-          </div>
-          <div className="flex gap-2 justify-between">
-            <div className="flex flex-col gap-3 w-[12%] bg-gray-50 rounded-lg p-2">
-              <h2 className='text-sm'>Set Humidity Range</h2>
-              <div className="flex flex-col">
-                <label className='text-xs'>Min</label>
+              <div className="flex md:flex-col gap-3 w-[60%] flex-row justify-between md:w-[100%]">
+                <div className="flex md:flex-col flex-row gap-5 md:gap-2 items-center w-[30%] mr-2 md:w-[100%]">
+                  <label className='text-xs w-[10%] md:w-[100%]'>Min</label>
                   <select
-                    onChange={(e) => setHumidityRange({ ...humidityRange, min: Number(e.target.value) })}
-                    value={humidityRange.min}
-                    className="bg-purple-600 text-white rounded-lg p-1 appearance-none w-[90%] text-xs"
+                    onChange={(e) => setTemperatureRange({ ...temperatureRange, min: Number(e.target.value) })}
+                    value={temperatureRange.min}
+                    className="bg-purple-600 text-white rounded-lg p-1 md:p-2 appearance-none w-[100%] text-xs text-center md:text-start"
                     style={{ backgroundColor: '#6B46C1', color: 'white' }}
                   >
-                    {[...Array(100).keys()].map((n) => (
+                    {[...Array(50).keys()].map((n) => (
                       <option
                         key={n}
                         value={n + 1}
@@ -454,29 +409,78 @@ const SensorChart: React.FC = () => {
                       </option>
                     ))}
                   </select>
-              </div>
-              <div className="flex flex-col">
-                <label className='text-xs'>Max</label>
-                <select
-                    onChange={(e) => setHumidityRange({ ...humidityRange, max: Number(e.target.value) })}
-                    value={humidityRange.max}
-                    className="bg-purple-600 text-white rounded-lg p-1 appearance-none w-[90%] text-xs"
-                    style={{ backgroundColor: '#6B46C1', color: 'white' }}
-                >
-                  {[...Array(100).keys()].map((n) => (
-                    <option
-                      key={n}
-                      value={n + 1}
-                      style={{ backgroundColor: '#6B46C1', color: 'white' }} 
-                    >
-                      {n + 1}
-                    </option>
-                  ))}
-                </select>
+                </div>
+                <div className="flex md:flex-col flex-row gap-5 items-center w-[30%] mr-2 md:w-[100%] md:gap-2">
+                  <label className='text-xs w-[10%] md:w-[100%]'>Max</label>
+                  <select
+                      onChange={(e) => setTemperatureRange({ ...temperatureRange, max: Number(e.target.value) })}
+                      value={temperatureRange.max}
+                      className="bg-purple-600 text-white rounded-lg p-1 md:p-2 appearance-none w-[100%] text-xs text-center md:text-start"
+                      style={{ backgroundColor: '#6B46C1', color: 'white' }}
+                  >
+                    {[...Array(50).keys()].map((n) => (
+                      <option
+                        key={n}
+                        value={n + 1}
+                        style={{ backgroundColor: '#6B46C1', color: 'white' }} 
+                      >
+                        {n + 1}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
             </div>
-            <div className="bg-white p-2 rounded-lg w-[85%]">
-              <ReactApexChart options={initialHumidityOptions} series={humiditySeries} type="line" height={350} />
+            <div className="bg-white px-20 py-6 rounded-lg md:w-[85%] w-[100%]">
+              <ReactApexChart options={initialTemperatureOptions} series={temperatureSeries} type="line" height={360} />
+            </div>
+          </div>
+          <div className="flex gap-4 justify-between flex-col md:flex-row">
+            <div className="flex flex-col gap-3 md:w-[12%] bg-gray-50 rounded-lg p-2 w-[100%]">
+              <h2 className='text-sm'>Set Humidity Range</h2>
+              <div className="flex md:flex-col gap-3 w-[60%] flex-row justify-between md:w-[100%]">
+                <div className="flex md:flex-col flex-row gap-5 items-center w-[30%] mr-2 md:w-[100%] md:gap-2">
+                  <label className='text-xs w-[10%] md:w-[100%]'>Min</label>
+                  <select
+                    onChange={(e) => setHumidityRange({ ...humidityRange, min: Number(e.target.value) })}
+                    value={humidityRange.min}
+                    className="bg-purple-600 text-white rounded-lg p-1 md:p-2 appearance-none w-[100%] text-xs text-center md:text-start"
+                    style={{ backgroundColor: '#6B46C1', color: 'white' }}
+                  >
+                    {[...Array(50).keys()].map((n) => (
+                      <option
+                        key={n}
+                        value={n + 1}
+                        style={{ backgroundColor: '#6B46C1', color: 'white' }} 
+                      >
+                        {n + 1}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex md:flex-col flex-row gap-5 md:gap-2 items-center w-[30%] mr-2 md:w-[100%]">
+                  <label className='text-xs w-[10%] md:w-[100%]'>Max</label>
+                  <select
+                      onChange={(e) => setHumidityRange({ ...humidityRange, max: Number(e.target.value) })}
+                      value={humidityRange.max}
+                      className="bg-purple-600 text-white rounded-lg p-1 md:p-2 appearance-none w-[100%] text-xs text-center md:text-start"
+                      style={{ backgroundColor: '#6B46C1', color: 'white' }}
+                  >
+                    {[...Array(50).keys()].map((n) => (
+                      <option
+                        key={n}
+                        value={n + 1}
+                        style={{ backgroundColor: '#6B46C1', color: 'white' }} 
+                      >
+                        {n + 1}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white px-20 py-6 rounded-lg md:w-[85%] w-[100%]">
+              <ReactApexChart options={initialHumidityOptions} series={humiditySeries} type="line" height={360} />
             </div>
           </div>
         </div>

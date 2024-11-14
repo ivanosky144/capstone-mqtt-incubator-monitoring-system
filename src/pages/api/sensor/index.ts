@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import authMiddleware from "@/middleware/auth_middleware";
 import UserSensor from "@/models/user_sensor";
 import SensorReading from "@/models/sensor_reading";
+import { ObjectId } from "mongodb";
 
 async function handleSensorRequest(req: NextApiRequest, res: NextApiResponse) {
     await connectToDatabase();
@@ -53,11 +54,18 @@ async function getSensorDataHistories(req: NextApiRequest, res: NextApiResponse)
     try {
         const { user_id } = req.query;
 
+        const userIdStr = Array.isArray(user_id) ? user_id[0] : user_id;
+        if (!userIdStr || !ObjectId.isValid(userIdStr)) {
+            return res.status(400).json({ error: 'Invalid or missing User ID' });
+        }
+
+        const userId = new ObjectId(userIdStr);
+
         let data = {};
         let analog: any = [];
         let i2c = {};
         for (let i = 1; i <= 5; i++) {
-            const userSensor = await UserSensor.find({ user_id: user_id, sensor_id: i});
+            const userSensor = await UserSensor.find({ user_id: userId, sensor_id: i});
             const sensorReading = await SensorReading.find({ user_sensor_id: userSensor[0]._id });
             const averageHumidity = sensorReading.reduce((sum, entry) => sum+entry.humidity, 0)/sensorReading.length;
             const averageTemperature = sensorReading.reduce((sum, entry) => sum+entry.temperature, 0)/sensorReading.length;

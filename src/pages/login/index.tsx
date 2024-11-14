@@ -58,17 +58,17 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex justify-center items-center">
+    <div className="min-h-screen flex justify-center items-center md:flex-row">
       <ToastContainer />
-      <div className="bg-purple shadow-xl rounded-lg h-[75vh] w-[25vw]">
+      <div className="bg-purple shadow-xl rounded-lg md:h-[75vh] md:w-[25vw] h-[10vh] hidden md:flex">
         <img src="/assets/baby-incubator.png" alt="" />
       </div>
-      <div className="bg-white px-8 pb-10 pt-4 rounded-lg shadow-xl flex flex-col items-center h-[75vh] w-[25vw] justify-center">
+      <div className="bg-white px-8 pb-10 pt-4 rounded-lg shadow-xl flex flex-col items-center h-[75vh] md:w-[25vw] justify-center w-[75vw]">
         <div className="flex flex-col gap-1 mb-5 items-center">
           <h1 className="font-bold text-black text-2xl text-dark_purple">Selamat datang di</h1>
           <img src="assets/inkubi-logo.jpeg" alt=""  className='w-24 h-32'/>
         </div>
-        <form className="space-y-4 w-full flex flex-col gap-2" onSubmit={handleSubmit}>
+        <form className="space-y-4 w-full flex flex-col gap-2 md:mt-0 mt-12" onSubmit={handleSubmit}>
           <div className='flex flex-col gap-4'>
             <div className="flex items-center gap-2 p-3 bg-white_purple text-xl rounded-md">
               <AiOutlineMail />
