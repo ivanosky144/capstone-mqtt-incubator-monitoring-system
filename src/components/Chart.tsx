@@ -36,14 +36,12 @@ const SensorChart: React.FC = () => {
     { name: 'Sensor Analog 2', data: [] as { x: number; y: number }[] },
     { name: 'Sensor Analog 3', data: [] as { x: number; y: number }[] },
     { name: 'Sensor Analog 4', data: [] as { x: number; y: number }[] },
-    { name: 'Sensor I2C', data: [] as { x: number; y: number }[] },
   ]);
   const [humiditySeries, setHumiditySeries] = useState([
     { name: 'Sensor Analog 1', data: [] as { x: number; y: number }[] },
     { name: 'Sensor Analog 2', data: [] as { x: number; y: number }[] },
     { name: 'Sensor Analog 3', data: [] as { x: number; y: number }[] },
     { name: 'Sensor Analog 4', data: [] as { x: number; y: number }[] },
-    { name: 'Sensor I2C', data: [] as { x: number; y: number }[] },
   ]);
 
   const [temperatureRange, setTemperatureRange] = useState({ min: 0, max: 50 });
@@ -260,14 +258,19 @@ const SensorChart: React.FC = () => {
       clientRef.current?.end();
     };
   }, [userInfo?.id]);
+
+  const playNotificationSound = () => {
+    const audio = new Audio('/assets/notification-sound.mp3');
+    audio.play().catch((err) => console.error('Error playing sound ', err));
+  };
   
 
   const updateChartSeries = (sensorData: MQTTMessage) => {
     const timestamp = new Date().getTime();
     const { sound_level: soundLevel, i2c: i2cData, analog: analogData } = sensorData;
-  
+
     // Show warning toasts if conditions are met
-    if (soundLevel > 70) {
+    if (soundLevel > 30) {
       toast.warning('Bayi sedang menangis!!!', {
         position: 'top-right',
         autoClose: 5000,
@@ -277,10 +280,13 @@ const SensorChart: React.FC = () => {
         draggable: true,
         progress: undefined,
       });
+      playNotificationSound();
     }
+
+    const isTemperatureHigh = (i2cData?.temperature > 38) || analogData.some(sensorData => sensorData.temperature > 38);
   
-    if (i2cData && i2cData.temperature > 38) {
-      toast.warning('Peringatan: Suhu di atas 38°C! Mohon periksa segera.', {
+    if (isTemperatureHigh) {
+      toast.warning('Bahaya, suhu terlalu tinggi! Jangan digunakan terlebih dahulu!', {
         position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
@@ -289,21 +295,8 @@ const SensorChart: React.FC = () => {
         draggable: true,
         progress: undefined,
       });
+      playNotificationSound();
     }
-  
-    analogData.forEach((sensorData, index) => {
-      if (sensorData.temperature > 38) {
-        toast.warning(`Peringatan: Suhu di atas 38°C! Mohon periksa segera.`, {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      }
-    });
   
     // Update Temperature Series
     setTemperatureSeries((prevSeries) => {
