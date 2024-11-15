@@ -96,7 +96,7 @@ export default function Stats() {
 
 
     return (
-        <div className="flex flex-col gap-3 px-4 py-5 h-16 bg-ultralight_purple h-[95%]">
+        <div className="flex flex-col gap-3 px-4 py-5 bg-ultralight_purple h-[95%]">
             <div className="md:grid md:grid-cols-2 gap-10 flex flex-col">
                 {analogSensorsData?.map((s, index) => {
                     const { temperatureSeries, humiditySeries } = s.data ? generateChartSeries(s.data) : { temperatureSeries: [], humiditySeries: [] };

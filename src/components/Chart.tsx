@@ -32,16 +32,16 @@ interface MQTTMessage {
 const SensorChart: React.FC = () => {
   const [analogSensorsData, setAnalogSensorsData] = useState<SensorData[]>([]);
   const [temperatureSeries, setTemperatureSeries] = useState([
-    { name: 'Sensor Analog 1', data: [] as { x: number; y: number }[] },
-    { name: 'Sensor Analog 2', data: [] as { x: number; y: number }[] },
-    { name: 'Sensor Analog 3', data: [] as { x: number; y: number }[] },
-    { name: 'Sensor Analog 4', data: [] as { x: number; y: number }[] },
+    { name: 'Sensor 1', data: [] as { x: number; y: number }[] },
+    { name: 'Sensor 2', data: [] as { x: number; y: number }[] },
+    { name: 'Sensor 3', data: [] as { x: number; y: number }[] },
+    { name: 'Sensor 4', data: [] as { x: number; y: number }[] },
   ]);
   const [humiditySeries, setHumiditySeries] = useState([
-    { name: 'Sensor Analog 1', data: [] as { x: number; y: number }[] },
-    { name: 'Sensor Analog 2', data: [] as { x: number; y: number }[] },
-    { name: 'Sensor Analog 3', data: [] as { x: number; y: number }[] },
-    { name: 'Sensor Analog 4', data: [] as { x: number; y: number }[] },
+    { name: 'Sensor 1', data: [] as { x: number; y: number }[] },
+    { name: 'Sensor 2', data: [] as { x: number; y: number }[] },
+    { name: 'Sensor 3', data: [] as { x: number; y: number }[] },
+    { name: 'Sensor 4', data: [] as { x: number; y: number }[] },
   ]);
 
   const [temperatureRange, setTemperatureRange] = useState({ min: 0, max: 50 });
