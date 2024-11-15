@@ -3,7 +3,6 @@ import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
 import { Inter } from "next/font/google";
 import useAuthStore from "@/store/auth_store";
-import { ObjectId } from "mongodb";
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
@@ -34,7 +33,7 @@ export default function Stats() {
 
         const getDataHistories = async () => {
             try {
-                const response = await fetch(`/api/sensor?user_id=${String(userInfo?.id)}`, {
+                const response = await fetch(`/api/sensor?user_id=${String("673204dd29690e9b4a7b9b90")}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json', 
@@ -94,10 +93,33 @@ export default function Stats() {
         }
     };
 
+    const { temperatureSeries: i2cTemperatureSeries, humiditySeries: i2cHumiditySeries } = I2CSensorData?.data ? generateChartSeries(I2CSensorData.data) : { temperatureSeries: [], humiditySeries: [] };
+
 
     return (
-        <div className="flex flex-col gap-3 px-4 py-5 bg-ultralight_purple h-[95%]">
-            <div className="md:grid md:grid-cols-2 gap-10 flex flex-col">
+        <div className="flex flex-col gap-3 p-1">
+            <div className="p-2 rounded-md bg-white w-[40%]">
+                <h2 className="font-semibold text-lg">Atur range waktu</h2>
+                <div className="flex justify-between">
+                    <input 
+                        type="datetime-local" 
+                        name="start"
+                        value={timeRange.start}
+                        onChange={handleTimeChange}
+                        className="p-1 text-sm rounded-lg bg-gray-100 text-dark_purple font-semibold w-[40%]"
+                    />
+                    <p className="text-dark_purple font-extrabold text-xl">—</p>
+                    <input 
+                        type="datetime-local" 
+                        name="end"
+                        value={timeRange.end}
+                        onChange={handleTimeChange}
+                        className="p-1 text-sm rounded-lg bg-gray-100 text-dark_purple font-semibold w-[40%]"
+                    />                    
+                </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-10">
                 {analogSensorsData?.map((s, index) => {
                     const { temperatureSeries, humiditySeries } = s.data ? generateChartSeries(s.data) : { temperatureSeries: [], humiditySeries: [] };
 
