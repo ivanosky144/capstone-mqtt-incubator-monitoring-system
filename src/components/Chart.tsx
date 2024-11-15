@@ -466,7 +466,7 @@ const SensorChart: React.FC = () => {
                       className="bg-purple-600 text-white rounded-lg p-1 md:p-2 appearance-none w-[100%] text-xs text-center md:text-start"
                       style={{ backgroundColor: '#6B46C1', color: 'white' }}
                   >
-                    {[...Array(50).keys()].map((n) => (
+                    {[...Array(100).keys()].map((n) => (
                       <option
                         key={n}
                         value={n + 1}
