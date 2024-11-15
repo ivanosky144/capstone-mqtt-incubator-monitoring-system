@@ -379,7 +379,7 @@ const SensorChart: React.FC = () => {
           <IoIosWater className='text-dark_purple text-8xl'/>
           <div className="flex flex-col">
             <p className='text-purple font-semibold text-xl'>Humidity</p>
-            <p className='md:text-5xl font-semibold text-4xl text-center'>{analogSensorsData.length ? analogSensorsData[3]?.humidity : 10.24} %</p>
+            <p className='md:text-5xl font-semibold text-4xl text-center'>{analogSensorsData.length ? analogSensorsData[3]?.humidity : 0} %</p>
           </div>
         </div>
       </div>
