@@ -25,9 +25,6 @@ export default function Panel() {
                     <FaHistory className={`${pathname === "/analytic" ? 'text-dark_purple' : 'text-gray-500'}`}/>
                     <h2 className={`font-semibold ${pathname === "/analytic" ? 'text-dark_purple' : 'text-gray-500'}`}>ANALYTIC</h2>
                 </div>
-                <div className="flex gap-5 items-center text-md hover:bg-gray-100 p-2 rounded-md cursor-pointer hover:text-purple">
-                    <h2 className='font-semibold text-gray-500'>LOGOUT</h2>
-                </div>
             </div>
     )
 }
