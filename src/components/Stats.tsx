@@ -97,27 +97,7 @@ export default function Stats() {
 
 
     return (
-        <div className="flex flex-col gap-3 p-1">
-            <div className="p-2 rounded-md bg-white w-[40%]">
-                <h2 className="font-semibold text-lg">Atur range waktu</h2>
-                <div className="flex justify-between">
-                    <input 
-                        type="datetime-local" 
-                        name="start"
-                        value={timeRange.start}
-                        onChange={handleTimeChange}
-                        className="p-1 text-sm rounded-lg bg-gray-100 text-dark_purple font-semibold w-[40%]"
-                    />
-                    <p className="text-dark_purple font-extrabold text-xl">—</p>
-                    <input 
-                        type="datetime-local" 
-                        name="end"
-                        value={timeRange.end}
-                        onChange={handleTimeChange}
-                        className="p-1 text-sm rounded-lg bg-gray-100 text-dark_purple font-semibold w-[40%]"
-                    />                    
-                </div>
-            </div>
+        <div className="flex flex-col gap-3 p-1 mt-48">
 
             <div className="grid grid-cols-2 gap-10">
                 {analogSensorsData?.map((s, index) => {

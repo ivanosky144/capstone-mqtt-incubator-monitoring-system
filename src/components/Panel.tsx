@@ -10,7 +10,7 @@ export default function Panel() {
     
 
     return (
-            <div className="fixed left-0 p-6 md:flex flex-col gap-10 w-[20%] shadow-sm h-screen bg-ultralight_purple justify-center">
+            <div className="left-0 p-6 md:flex flex-col gap-10 w-[20%] shadow-sm h-screen bg-ultralight_purple justify-center">
                 <div 
                     className="flex gap-5 items-center text-md hover:bg-gray-100 p-2 rounded-md cursor-pointer hover:text-purple"
                     onClick={() => router.push("/dashboard")}
