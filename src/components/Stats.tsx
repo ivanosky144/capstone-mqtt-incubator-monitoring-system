@@ -34,7 +34,7 @@ export default function Stats() {
 
         const getDataHistories = async () => {
             try {
-                const response = await fetch(`/api/sensor?user_id=${"673202e429690e9b4a7b9ab5"}`, {
+                const response = await fetch(`/api/sensor?user_id=${String(userInfo?.id)}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json', 
