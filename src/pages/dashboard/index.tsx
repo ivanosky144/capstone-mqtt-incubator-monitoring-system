@@ -29,7 +29,7 @@ export default function Dashboard() {
     // }, [isLoggedIn, router]);
 
     useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth <= 720);
+        const handleResize = () => setIsMobile(window.innerWidth <= 740);
         handleResize();
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
