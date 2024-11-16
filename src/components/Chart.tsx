@@ -268,7 +268,7 @@ const SensorChart: React.FC = () => {
   const updateChartSeries = (sensorData: MQTTMessage) => {
     const timestamp = new Date().getTime();
     const { sound_level: soundLevel, i2c: i2cData, analog: analogData } = sensorData;
-  
+
     // Show warning toasts if conditions are met
     if (soundLevel > 27) {
       toast.warning('Bayi sedang menangis!!!', {
@@ -282,9 +282,9 @@ const SensorChart: React.FC = () => {
       });
       playNotificationSound();
     }
-  
+
     const isTemperatureHigh = (i2cData?.temperature > 38) || analogData.some(sensorData => sensorData.temperature > 38);
-    
+  
     if (isTemperatureHigh) {
       toast.warning('Bahaya, suhu terlalu tinggi! Jangan digunakan terlebih dahulu!', {
         position: 'top-right',
@@ -316,20 +316,17 @@ const SensorChart: React.FC = () => {
       }
   
       return prevSeries.map((sensor, index) => {
-        const temperature = [0, 1, 3].includes(index) 
-          ? analogData[index]?.temperature 
-          : i2cData?.temperature;
-  
-        // Only add data if the temperature is a valid number
-        if (!isNaN(temperature)) {
+        if (index <= 4) {
           return {
             ...sensor,
-            data: [...sensor.data, { x: timestamp, y: temperature }].slice(-50),
+            data: [...sensor.data, { x: timestamp, y: analogData[index]?.temperature }].slice(-50),
+          };
+        } else {
+          return {
+            ...sensor,
+            data: [...sensor.data, { x: timestamp, y: i2cData?.temperature }].slice(-50),
           };
         }
-  
-        // Return the sensor data unmodified if temperature is NaN
-        return sensor;
       });
     });
   
@@ -350,31 +347,20 @@ const SensorChart: React.FC = () => {
       }
   
       return prevSeries.map((sensor, index) => {
-        let humidity;
-  
-        // Set humidity to zero for the third sensor
-        if (index === 2) {
-          humidity = 0;
-        } else if (index < 4) {
-          humidity = analogData[index]?.humidity;
-        } else {
-          humidity = i2cData?.humidity;
-        }
-  
-        // Only add data if the humidity is a valid number
-        if (!isNaN(humidity)) {
+        if (index < 4) {
           return {
             ...sensor,
-            data: [...sensor.data, { x: timestamp, y: humidity }].slice(-50),
+            data: [...sensor.data, { x: timestamp, y: analogData[index]?.humidity }].slice(-50),
+          };
+        } else {
+          return {
+            ...sensor,
+            data: [...sensor.data, { x: timestamp, y: i2cData?.humidity }].slice(-50),
           };
         }
-  
-        // Return the sensor data unmodified if humidity is NaN
-        return sensor;
       });
     });
   };
-  
   
   
 
